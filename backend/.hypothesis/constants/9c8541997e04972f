@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/data_source_api.py
+# hypothesis_version: 6.151.4
+
+[100, 201, 204, 400, 404, 422, 500, '/', '/api/data-sources', '/test', '/upload', '/{source_id}', '/{source_id}/tables', 'Data Sources', 'auth_type', 'connection_status', 'created_at', 'created_by', 'database_name', 'db_type', 'description', 'domain', 'error', 'file_path', 'host', 'id', 'last_test_time', 'latency_ms', 'message', 'name', 'password', 'port', 'source_type', 'status', 'success', 'tables', 'test-temp', 'updated_at', 'username', '创建数据源失败', '删除数据源失败', '启用状态：true/false', '密码加密失败，请稍后重试', '密码长度不能少于8位', '搜索关键词（名称、描述）', '数据源不存在', '数据源类型：DATABASE/FILE', '更新数据源失败', '每页数量，1-100', '获取数据源列表失败', '获取数据源详情失败', '连接测试失败，请检查配置信息', '页码，从1开始']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/dynamic_dictionary_service.py
+# hypothesis_version: 6.151.4
+
+[1000, 3600, 'MySQL', 'PostgreSQL', 'SQLServer', '字典刷新成功', '查询执行成功']

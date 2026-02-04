@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/prompt_api.py
+# hypothesis_version: 6.151.4
+
+[0.7, 404, 2048, '/api/prompts', '/{prompt_id}', '/{prompt_type}', 'description', 'project_id不能为空', 'prompt_id必须为正整数', 'prompt_type不能为空', 'prompts', 'system', '未找到']

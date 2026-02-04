@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/table_relation.py
+# hypothesis_version: 6.151.4
+
+[3.141592653589793, 50.0, 100, 500, '/api/table-relations', '/graph', '/{relation_id}', 'FULL', 'INNER', 'LEFT', 'RIGHT', 'bigint', 'char', 'date', 'datetime', 'decimal', 'double', 'float', 'int', 'integer', 'join_type', 'longtext', 'mediumtext', 'nchar', 'numeric', 'nvarchar', 'real', 'smallint', 'text', 'time', 'timestamp', 'tinyint', 'varchar', '主表ID', '主表字段ID', '从表ID', '从表字段ID', '关联名称', '关联描述', '创建人', '创建表关联失败', '删除表关联失败', '是否启用', '是否启用，默认为True', '更新表关联失败', '获取表关联列表失败', '获取表关联图结构数据失败', '获取表关联详情失败', '表关联', '该关联关系已存在']

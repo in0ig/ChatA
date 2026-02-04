@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/knowledge_item.py
+# hypothesis_version: 6.151.4
+
+[100, 400, 404, '/', '/{item_id}', 'EVENT', 'TERM', 'knowledge-items', 'message', '事件知识必须提供事件开始时间', '名词知识必须提供知识名称', '每页数量', '知识库ID', '知识库不存在', '知识类型', '知识项不存在', '知识项删除成功', '页码']

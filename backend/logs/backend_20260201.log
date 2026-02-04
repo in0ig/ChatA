@@ -1,0 +1,324 @@
+2026-02-01 21:35:21 - ChatBI - INFO - Starting ChatBI Backend server with MODEL_TYPE='local', QWEN_MODEL_NAME='qwen-agent'
+2026-02-01 21:35:21 - ChatBI - INFO - Registered routes:
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /openapi.json
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /docs
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /docs/oauth2-redirect
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /redoc
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/test
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/upload
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/data-sources/{source_id}/activate
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/{source_id}/tables
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/query/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/theme
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/theme
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/language
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/language
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/notifications
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/notifications
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/query/history
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/query/history
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/query/history/{history_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/prompts/api/prompts
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/prompts/api/prompts/{prompt_type}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/prompts/api/prompts
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/context
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/sessions/{session_id}/context/summarize
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/messages
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/token-usage
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/sessions/{session_id}/message
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/conversation-history
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/last-message
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/messages-by-parent/{parent_message_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/sessions/
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/sessions/{session_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-bases/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/knowledge-bases/
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/knowledge-bases/{id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/knowledge-bases/{id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/knowledge-items/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-items/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-items/knowledge-base/{knowledge_base_id}/items
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}/columns
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/{table_id}/refresh
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/{table_id}/sync
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}/sync/status
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/{table_id}/sync/cancel
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}/fields
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/table-fields/{field_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/upload-excel
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/excel/structure
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/excel/sheet/preview
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/excel/sheet/validate
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/excel/generate-schema
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/import-excel
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/import-status/{job_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/import-cancel/{job_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-relations
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-relations/graph
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/table-relations
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/tree
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}/items
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/{dict_id}/items
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/{dict_id}/items/batch
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}/export
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}/download
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/cache/stats
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/{dict_id}/import
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dynamic-dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dynamic-dictionaries/test-query
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dynamic-dictionaries/{dictionary_id}/refresh
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dynamic-dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dynamic-dictionaries/{dictionary_id}/refresh-status
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionary-version/create-from-current
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionary-version/{dictionary_id}/list
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionary-version/detail/{version_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionary-version/compare
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionary-version/rollback
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionary-version/statistics/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-folders/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-folders/tree
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/table-folders/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/table-folders/{folder_id}/move
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /health
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /health/db
+2026-02-01 21:35:21 - ChatBI - INFO - Validating API path formats...
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {source_id} in /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {source_id} in /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {source_id} in /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {source_id} in /api/data-sources/{source_id}/activate
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {source_id} in /api/data-sources/{source_id}/tables
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {history_id} in /api/query/history/{history_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Duplicate 'api' prefix detected in path: /api/prompts/api/prompts
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Duplicate 'api' prefix detected in path: /api/prompts/api/prompts/{prompt_type}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {prompt_type} in /api/prompts/api/prompts/{prompt_type}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Duplicate 'api' prefix detected in path: /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {prompt_id} in /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Duplicate 'api' prefix detected in path: /api/prompts/api/prompts
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Duplicate 'api' prefix detected in path: /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {prompt_id} in /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Duplicate 'api' prefix detected in path: /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {prompt_id} in /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/context
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/context/summarize
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/messages
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/token-usage
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/message
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/conversation-history
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/last-message
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}/messages-by-parent/{parent_message_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {parent_message_id} in /api/sessions/{session_id}/messages-by-parent/{parent_message_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {session_id} in /api/sessions/{session_id}
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-bases
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-bases
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-bases
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-bases
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-items
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-items
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {item_id} in /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {item_id} in /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {item_id} in /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - ✅ Correct plural resource naming: knowledge-items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {knowledge_base_id} in /api/knowledge-items/knowledge-base/{knowledge_base_id}/items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}/columns
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}/refresh
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}/sync
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}/sync/status
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}/sync/cancel
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {table_id} in /api/data-tables/{table_id}/fields
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {field_id} in /api/table-fields/{field_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {job_id} in /api/data-tables/import-status/{job_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {job_id} in /api/data-tables/import-cancel/{job_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {relation_id} in /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {relation_id} in /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {relation_id} in /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/items
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {item_id} in /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {item_id} in /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/items/batch
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/export
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/download
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dict_id} in /api/dictionaries/{dict_id}/import
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dynamic-dictionaries/{dictionary_id}/refresh
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dynamic-dictionaries/{dictionary_id}/refresh-status
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dictionary-version/{dictionary_id}/list
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {version_id} in /api/dictionary-version/detail/{version_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {dictionary_id} in /api/dictionary-version/statistics/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {folder_id} in /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {folder_id} in /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {folder_id} in /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - WARNING - ⚠️  Path segment should use kebab-case instead of snake_case: {folder_id} in /api/table-folders/{folder_id}/move
+2026-02-01 21:35:21 - ChatBI - INFO - API path validation completed. Total API routes: 111
+2026-02-01 21:35:21 - ChatBI - INFO - Custom OpenAPI schema for data preparation module has been configured
+2026-02-01 21:35:21 - ChatBI - INFO - Initializing database connection on startup...
+2026-02-01 21:35:21 - ChatBI - INFO - Database tables created successfully
+2026-02-01 21:35:21 - ChatBI - INFO - Registered routes:
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /openapi.json
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /docs
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /docs/oauth2-redirect
+2026-02-01 21:35:21 - ChatBI - INFO - {'HEAD', 'GET'} /redoc
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/data-sources/{source_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/test
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/upload
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/data-sources/{source_id}/activate
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-sources/{source_id}/tables
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/query/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/theme
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/theme
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/language
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/language
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/settings/notifications
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/settings/notifications
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/query/history
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/query/history
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/query/history/{history_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/prompts/api/prompts
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/prompts/api/prompts/{prompt_type}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/prompts/api/prompts
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/prompts/api/prompts/{prompt_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/context
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/sessions/{session_id}/context/summarize
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/messages
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/token-usage
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/sessions/{session_id}/message
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/conversation-history
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/last-message
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/{session_id}/messages-by-parent/{parent_message_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/sessions/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/sessions/
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/sessions/{session_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-bases/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/knowledge-bases/
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/knowledge-bases/{id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/knowledge-bases/{id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/knowledge-items/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-items/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/knowledge-items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/knowledge-items/knowledge-base/{knowledge_base_id}/items
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/data-tables/{table_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}/columns
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/{table_id}/refresh
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/{table_id}/sync
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}/sync/status
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/{table_id}/sync/cancel
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/{table_id}/fields
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/table-fields/{field_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-sources/upload-excel
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/excel/structure
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/excel/sheet/preview
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/excel/sheet/validate
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/excel/generate-schema
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/import-excel
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/data-tables/import-status/{job_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/data-tables/import-cancel/{job_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-relations
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-relations/graph
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/table-relations
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/table-relations/{relation_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/tree
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/dictionaries/{dict_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}/items
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/{dict_id}/items
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/dictionaries/{dict_id}/items/{item_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/{dict_id}/items/batch
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}/export
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/{dict_id}/download
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionaries/cache/stats
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionaries/{dict_id}/import
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dynamic-dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/dynamic-dictionaries/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dynamic-dictionaries/test-query
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dynamic-dictionaries/{dictionary_id}/refresh
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dynamic-dictionaries/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dynamic-dictionaries/{dictionary_id}/refresh-status
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionary-version/create-from-current
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionary-version/{dictionary_id}/list
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionary-version/detail/{version_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionary-version/compare
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/dictionary-version/rollback
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/dictionary-version/statistics/{dictionary_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-folders/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-folders/tree
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/table-folders/
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'PUT'} /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'DELETE'} /api/table-folders/{folder_id}
+2026-02-01 21:35:21 - ChatBI - INFO - {'POST'} /api/table-folders/{folder_id}/move
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /health
+2026-02-01 21:35:21 - ChatBI - INFO - {'GET'} /health/db

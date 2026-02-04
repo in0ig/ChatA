@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/utils/encryption.py
+# hypothesis_version: 6.151.4
+
+['ENCRYPTION_KEY', 'utf-8', '加密失败：密钥无效或已损坏', '加密密码必须是字符串类型', '密码必须是字符串类型', '解密失败：数据已损坏或格式不正确']

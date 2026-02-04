@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/query_api.py
+# hypothesis_version: 6.151.4
+
+[400, 500, '/', 'Query', 'chart_type', 'data', 'entities', 'headers', 'metadata', 'result', 'rows', 'sql', 'timeRange', 'time_range']

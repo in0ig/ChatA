@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/schemas/data_table_schema.py
+# hypothesis_version: 6.151.4
+
+[100, 255, 1000, '2026-01-26T10:00:00Z', 'INT', 'column_count', 'created_at', 'data_type', 'description', 'display_name', 'example', 'field_name', 'id', 'is_aggregatable', 'is_foreign_key', 'is_nullable', 'is_primary_key', 'is_queryable', 'items', 'last_refreshed', 'page', 'page_size', 'pages', 'public', 'row_count', 'schema_name', 'sort_order', 'source_id', 'status', 'table_id', 'table_name', 'total', 'updated_at', 'users', '主键', '关联字典ID', '列数', '创建时间', '创建者', '字段ID', '字段ID（UUID）', '字段名', '字段描述', '字段数', '导入状态', '当前页码', '总记录数', '总页数', '所属数据源ID', '所属数据表ID', '所属表ID', '排序顺序', '数据模式', '数据类型', '数据表ID（UUID）', '数据表列表', '是否为主键', '是否为外键', '是否主键', '是否允许为空', '是否可为空', '是否可查询', '是否可聚合', '是否启用', '显示名称', '更新时间', '最后刷新时间', '最后同步时间', '模式名/数据库名', '每页数量', '用户ID', '用户信息表', '用户唯一标识', '行数', '表名', '表描述', '默认值']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/models/database_models.py
+# hypothesis_version: 6.151.4
+
+[0.7, 100, 2048, 'CASCADE', 'aliyun', 'aliyun_model', 'assistant', 'data_interpretation', 'extend_existing', 'follow_up_handling', 'intent_recognition', 'local', 'local_model', 'none', 'prompt_config', 'session_context', 'sql_error_recovery', 'sql_generation', 'system', 'table_selection', 'token_usage_stats', 'user']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/database_service.py
+# hypothesis_version: 6.151.4
+
+['5', 'Access denied', "Can't connect to", 'DB_HOST', 'DB_HOST is required', 'DB_NAME', 'DB_NAME is required', 'DB_PASSWORD', 'DB_POOL_SIZE', 'DB_PORT', 'DB_USER', 'DB_USER is required', 'N/A', 'SELECT DATABASE()', 'Unknown database', 'active_connections', 'autocommit', 'charset', 'chatbi_pool', 'collation', 'connected', 'connection_failed', 'database', 'database_name', 'description', 'error', 'healthy', 'host', 'method', 'not_initialized', 'password', 'pool_initialized', 'pool_name', 'pool_reset_session', 'pool_size', 'port', 'query_failed', 'status', 'unknown', 'user', 'utf8mb4', 'utf8mb4_unicode_ci', '密码认证', '成功从连接池获取数据库连接', '数据库连接池已成功关闭', '无法获取数据库连接', '连接池创建失败，返回None', '连接池已关闭或未初始化', '连接池未初始化，尝试自动初始化']

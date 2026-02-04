@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/session_service.py
+# hypothesis_version: 6.151.4
+
+[', ', 'content', 'last_active = %s', 'name = %s', 'role', 'timestamp', 'user_id = %s']

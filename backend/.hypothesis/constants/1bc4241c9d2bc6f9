@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/data_source_service.py
+# hypothesis_version: 6.151.4
+
+[300, 'CONNECTED', 'DATABASE', 'FAILED', 'active_connections', 'auth_type', 'connection_status', 'database_name', 'db_type', 'details', 'domain', 'elapsed_time_ms', 'error', 'error_rate', 'failed_connections', 'host', 'idle_connections', 'last_check_time', 'name', 'password', 'pool_id', 'port', 'source_type', 'status', 'success', 'total_connections', 'username']

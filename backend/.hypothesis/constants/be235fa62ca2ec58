@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/excel_service.py
+# hypothesis_version: 6.151.4
+
+['./public/uploads', '0', '1', 'BOOLEAN', 'DATETIME', 'DECIMAL', 'INTEGER', 'None', 'TEXT', 'UPLOAD_DIR', 'column_count', 'columns', 'data', 'data_type', 'display_name', 'false', 'field_name', 'file_path', 'is_nullable', 'name', 'nan', 'no', 'null_count', 'object', 'records', 'row_count', 'sample_values', 'sheet_count', 'sheet_name', 'sheets', 'temp_file', 'true', 'unique_count', 'wb', 'yes']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/main.py
+# hypothesis_version: 6.148.7
+
+[8000, '*', '/', '/api', '/api/', '/api/data-tables', '/api/knowledge-bases', '/api/knowledge-items', '/api/prompts', '/api/query', '/api/sessions', '/api/settings', '/health', '/health/db', '0.0.0.0', 'ChatBI Backend', 'MODEL_TYPE', 'MySQL', 'QWEN_MODEL_NAME', 'Registered routes:', 'SELECT 1', 'TEST_MODE', '_', '__main__', 'api', 'database', 'error', 'false', 'healthy', 'info', 'knowledge-base', 'knowledge-bases', 'knowledge-item', 'knowledge-items', 'local', 'message', 'path', 'qwen-agent', 'shutdown', 'startup', 'status', 'true', 'unhealthy']

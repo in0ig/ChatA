@@ -1,0 +1,172 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
+// 创建日志函数
+const createRouterLog = () => {
+  const logKey = 'routerLogs';
+  let logs = [];
+  try {
+    const stored = localStorage.getItem(logKey);
+    if (stored) {
+      logs = JSON.parse(stored);
+    }
+  } catch (e) {
+    console.warn('Failed to load router logs from localStorage');
+  }
+  return { logs, logKey };
+};
+
+const addRouterLog = (type, message, data = null) => {
+  const timestamp = new Date().toISOString();
+  const logEntry = {
+    timestamp,
+    type,
+    message,
+    data
+  };
+  
+  // 输出到控制台
+  switch(type) {
+    case 'navigation-start':
+      console.groupCollapsed('%cRouter Navigation Started', 'color: #1890ff; font-weight: bold');
+      console.log('From:', message);
+      console.log('To:', data?.to);
+      console.log('Query:', data?.query);
+      console.groupEnd();
+      break;
+    case 'navigation-success':
+      console.groupCollapsed('%cRouter Navigation Successful', 'color: #52c41a; font-weight: bold');
+      console.log('To:', message);
+      console.log('From:', data?.from);
+      console.log('Hash:', data?.hash);
+      console.groupEnd();
+      break;
+    case 'navigation-error':
+      console.groupCollapsed('%cRouter Navigation Error', 'color: red; font-weight: bold');
+      console.log('Error:', message);
+      console.log('To:', data?.to);
+      console.log('From:', data?.from);
+      console.log('Details:', data?.error);
+      console.groupEnd();
+      break;
+    case 'route-change':
+      console.groupCollapsed('%cRoute Changed', 'color: #666; font-weight: bold');
+      console.log('Current route:', message);
+      console.log('Params:', data?.params);
+      console.log('Query:', data?.query);
+      console.groupEnd();
+      break;
+    default:
+      console.log(`[${type}]`, message, data);
+  }
+  
+  // 存储到localStorage模拟文件
+  const { logs, logKey } = createRouterLog();
+  logs.push(logEntry);
+  // 限制日志数量，避免内存溢出
+  if (logs.length > 500) {
+    logs.shift();
+  }
+  try {
+    localStorage.setItem(logKey, JSON.stringify(logs));
+  } catch (e) {
+    console.warn('Failed to save router logs to localStorage');
+  }
+};
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/Home.vue')
+  },
+  {
+    path: '/data-prep/sources',
+    name: 'DataSources',
+    component: () => import('@/views/DataPrep/DataSources.vue')
+  },
+  {
+    path: '/data-prep/tables',
+    name: 'DataTables',
+    component: () => import('@/views/DataPrep/DataTables.vue')
+  },
+  {
+    path: '/data-prep/tables/:tableId/fields',
+    name: 'TableFields',
+    component: () => import('@/views/DataPrep/TableFields.vue')
+  },
+  {
+    path: '/data-prep/entry',
+    name: 'DataEntry',
+    component: () => import('@/views/DataPrep/DataTables.vue')
+  },
+  {
+    path: '/data-prep/dictionaries',
+    name: 'Dictionaries',
+    component: () => import('@/views/DataPrep/Dictionaries.vue')
+  },
+  {
+    path: '/data-prep/relations',
+    name: 'TableRelations',
+    component: () => import('@/views/DataPrep/TableRelations.vue')
+  },
+  {
+    path: '/project-info',
+    name: 'ProjectInfo',
+    component: () => import('@/views/ProjectInfo.vue')
+  },
+  {
+    path: '/team-members',
+    name: 'TeamMembers',
+    component: () => import('@/views/TeamMembers.vue')
+  },
+  {
+    path: '/resource-permissions',
+    name: 'ResourcePermissions',
+    component: () => import('@/views/ResourcePermissions.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+// 导航守卫 - 记录导航开始
+router.beforeEach((to, from, next) => {
+  addRouterLog('navigation-start', from.fullPath, {
+    to: to.fullPath,
+    query: to.query
+  });
+  next();
+});
+
+// 导航守卫 - 记录导航成功
+router.afterEach((to, from) => {
+  addRouterLog('navigation-success', to.fullPath, {
+    from: from.fullPath,
+    hash: to.hash
+  });
+  addRouterLog('route-change', to.fullPath, {
+    params: to.params,
+    query: to.query
+  });
+});
+
+// 导航守卫 - 记录导航错误
+router.onError((error, to, from) => {
+  addRouterLog('navigation-error', error.message, {
+    to: to?.fullPath || 'unknown',
+    from: from?.fullPath || 'unknown',
+    error: error
+  });
+});
+
+export default router  {
+    path: '/data-prep/manager',
+    name: 'DataPreparationManager',
+    component: () => import('@/views/DataPrep/DataPreparationManager.vue')
+  },

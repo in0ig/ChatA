@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/excel_parser.py
+# hypothesis_version: 6.151.4
+
+[100, 1000, 'BOOLEAN', 'DATETIME', 'DECIMAL', 'DECIMAL(10,2)', 'IMPORT', 'INT', 'INTEGER', 'TEXT', 'VARCHAR(255)', '_', 'column_count', 'data_mode', 'data_quality', 'data_type', 'description', 'display_name', 'estimated_data_types', 'field_analysis', 'field_name', 'field_types', 'fields', 'has_empty_rows', 'is_nullable', 'is_preview', 'is_primary_key', 'name', 'null_count', 'null_percentage', 'preview_limit', 'row_count', 'sample_values', 'sheet_name', 'sheets', 'sort_order', 'table_name', 'total_columns', 'total_rows', 'unique_count', 'unique_values', 'unnamed_column']

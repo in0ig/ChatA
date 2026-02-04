@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/table_sync.py
+# hypothesis_version: 6.151.4
+
+['MySQL', 'PRI', 'PostgreSQL', 'YES', 'created', 'data_type', 'database_name', 'deleted', 'description', 'field_name', 'is_nullable', 'is_primary_key', 'table_name', 'updated']

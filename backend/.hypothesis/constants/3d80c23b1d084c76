@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/table_field.py
+# hypothesis_version: 6.151.4
+
+[404, 500, '/api', 'Table Fields', '更新字段配置失败']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/excel_upload.py
+# hypothesis_version: 6.151.4
+
+[1024, '.xls', '.xlsx', '/api/data-sources', '/upload-excel', 'data-sources', 'router']

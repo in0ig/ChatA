@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/utils/logger.py
+# hypothesis_version: 6.151.4
+
+['%Y-%m-%d %H:%M:%S', 'ChatBI', 'logger', 'logs', 'utf-8']

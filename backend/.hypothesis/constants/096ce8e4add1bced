@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/connection_pool_manager.py
+# hypothesis_version: 6.148.7
+
+[0.0, 300, 'DEGRADED', 'FAILED', 'HEALTHY', 'INITIALIZING', 'MYSQL', 'SELECT 1', 'SQL SERVER', 'acquired', 'autocommit', 'charset', 'config', 'connection_timeout', 'connections', 'current_size', 'database', 'error', 'host', 'max_size', 'password', 'pool_id', 'pool_name', 'pool_reset_session', 'pool_size', 'port', 'released', 'use_unicode', 'user', 'utf8mb4']

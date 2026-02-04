@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/history_api.py
+# hypothesis_version: 6.151.4
+
+[404, 500, '/history', 'All history cleared', 'Query History', 'chart_type', 'count', 'created_at', 'id', 'message', 'query_text', 'result']

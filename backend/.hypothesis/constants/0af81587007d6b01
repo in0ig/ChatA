@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/database.py
+# hypothesis_version: 6.151.4
+
+['TEST_MODE', 'check_same_thread', 'false', 'test_data_table.db', 'true', '生产模式已启用，使用MySQL数据库']

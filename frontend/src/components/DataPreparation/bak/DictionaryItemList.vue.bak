@@ -1,0 +1,272 @@
+<template>
+  <div class="dictionary-item-list">
+    <div class="header">
+      <h3>字典项管理</h3>
+      <el-button 
+        type="primary" 
+        @click="addNewItem"
+        :disabled="!hasActiveDictionary"
+      >
+        <el-icon><Plus /></el-icon> 新增
+      </el-button>
+    </div>
+
+    <div v-if="dictionaries.length > 0" class="table-container">
+      <el-select 
+        v-model="selectedDictionaryId" 
+        placeholder="选择字典"
+        @change="onDictionaryChange"
+        class="dictionary-selector"
+      >
+        <el-option
+          v-for="dict in dictionaries"
+          :key="dict.id"
+          :label="dict.name"
+          :value="dict.id"
+        />
+      </el-select>
+
+      <el-table
+        v-if="currentDictionaryItems.length > 0"
+        :data="currentDictionaryItems"
+        border
+        style="width: 100%"
+        class="dictionary-table"
+      >
+        <el-table-column
+          prop="key"
+          label="键"
+          min-width="120"
+        />
+        
+        <el-table-column
+          prop="value"
+          label="值"
+          min-width="120"
+        />
+        
+        <el-table-column
+          prop="description"
+          label="描述"
+          min-width="180"
+        />
+        
+        <el-table-column
+          label="操作"
+          width="100"
+        >
+          <template #default="scope">
+            <el-button
+              type="danger"
+              size="small"
+              @click="deleteItem(scope.row)"
+            >
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      
+      <div class="empty-state" v-else>
+        <el-empty description="暂无字典项" />
+      </div>
+    </div>
+    
+    <div class="no-dictionary" v-else>
+      <el-empty description="请先创建或选择字典" />
+    </div>
+    
+    <!-- 新增对话框 -->
+    <el-dialog
+      v-model="addDialogVisible"
+      title="新增字典项"
+      width="400px"
+    >
+      <el-form
+        ref="addForm"
+        :model="addForm"
+        label-width="80px"
+        label-position="top"
+      >
+        <el-form-item label="键" required>
+          <el-input v-model="addForm.key" placeholder="请输入键" />
+        </el-form-item>
+        
+        <el-form-item label="值" required>
+          <el-input v-model="addForm.value" placeholder="请输入值" />
+        </el-form-item>
+        
+        <el-form-item label="描述">
+          <el-input v-model="addForm.description" placeholder="请输入描述" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="addDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmAdd">确定</el-button>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { ElMessage } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
+import { useDataPreparationStore } from '@/store/modules/dataPreparation'
+import { dictionaryApi } from '@/services/dictionaryApi'
+import { Dictionary, DictionaryItem } from '@/services/dictionaryApi'
+
+const store = useDataPreparationStore()
+
+// 状态
+const selectedDictionaryId = ref<string | null>(null)
+const addDialogVisible = ref(false)
+
+// 新增表单
+const addForm = ref({
+  key: '',
+  value: '',
+  description: ''
+})
+
+// 字典项数据
+const currentDictionaryItems = computed<DictionaryItem[]>(() => {
+  const dict = store.dictionaries.find(d => d.id === selectedDictionaryId.value)
+  if (!dict || !dict.items) return []
+  return dict.items
+})
+
+// 字典列表
+const dictionaries = computed<Dictionary[]>(() => store.dictionaries)
+
+// 是否有活跃字典
+const hasActiveDictionary = computed(() => {
+  return dictionaries.value.length > 0 && selectedDictionaryId.value !== null
+})
+
+// 初始化
+const init = () => {
+  // 加载字典列表
+  store.fetchDictionaries()
+  
+  // 如果有字典，自动选择第一个
+  if (dictionaries.value.length > 0) {
+    selectedDictionaryId.value = dictionaries.value[0].id
+  }
+}
+
+// 字典变化时
+const onDictionaryChange = () => {
+  // 重置编辑状态
+}
+
+// 添加新项目
+const addNewItem = () => {
+  addDialogVisible.value = true
+  // 重置表单
+  addForm.value = {
+    key: '',
+    value: '',
+    description: ''
+  }
+}
+
+// 确认新增
+const confirmAdd = async () => {
+  if (!addForm.value.key || !addForm.value.value) {
+    ElMessage.error('键和值为必填项')
+    return
+  }
+  
+  try {
+    if (!selectedDictionaryId.value) {
+      ElMessage.error('请选择字典')
+      return
+    }
+    
+    const newItem = await dictionaryApi.createItem(
+      selectedDictionaryId.value, 
+      {
+        key: addForm.value.key,
+        value: addForm.value.value,
+        description: addForm.value.description || ''
+      }
+    )
+    
+    // 更新本地状态
+    const dict = store.dictionaries.find(d => d.id === selectedDictionaryId.value)
+    if (dict && dict.items) {
+      dict.items.push(newItem)
+    }
+    
+    ElMessage.success('字典项添加成功')
+    addDialogVisible.value = false
+  } catch (error) {
+    ElMessage.error('添加字典项失败')
+  }
+}
+
+// 删除字典项
+const deleteItem = async (item: DictionaryItem) => {
+  // 这里可以添加删除确认逻辑
+  try {
+    await dictionaryApi.deleteItem(item.id)
+    
+    // 更新本地状态
+    const dict = store.dictionaries.find(d => d.id === selectedDictionaryId.value)
+    if (dict && dict.items) {
+      dict.items = dict.items.filter(i => i.id !== item.id)
+    }
+    
+    ElMessage.success('字典项已删除')
+  } catch (error) {
+    ElMessage.error('删除字典项失败')
+  }
+}
+
+// 初始化组件
+init()
+</script>
+
+<style scoped>
+.dictionary-item-list {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--el-text-color-primary);
+}
+
+.table-container {
+  margin-bottom: 20px;
+}
+
+dictionary-selector {
+  margin-bottom: 15px;
+  width: 300px;
+}
+
+dictionary-table {
+  margin-bottom: 20px;
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+}
+
+.no-dictionary {
+  padding: 40px;
+  text-align: center;
+  color: var(--el-text-color-secondary);
+}
+</style>

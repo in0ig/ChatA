@@ -1,0 +1,4 @@
+=== 日志系统启动于 2026-01-26 13:51:34 ===
+
+[2026-01-26 13:52:13] [INFO    ] [main           ] - Closing database connection pool on shutdown...
+[2026-01-26 13:52:13] [INFO    ] [main           ] - 数据库连接池已成功关闭

@@ -1,0 +1,560 @@
+.
+├── backend
+│   ├── alembic
+│   │   ├── env.py
+│   │   ├── README
+│   │   ├── script.py.mako
+│   │   └── versions
+│   │       ├── 001_prompt_config_table.py
+│   │       ├── 002_add_chatbi_enhanced_tables.py
+│   │       ├── 003_add_knowledge_base_table.py
+│   │       ├── 004_add_knowledge_items_table.py
+│   │       ├── 005_create_data_preparation_tables.py
+│   │       ├── 006_fix_data_preparation_tables.py
+│   │       ├── 20260130182038_add_table_folders.py
+│   │       ├── 567445871e5f_add_dictionary_version_tables.py
+│   │       ├── 7aaa9c1f6c30_merge_heads.py
+│   │       ├── 99e3899c81cd_merge_knowledge_base_and_items.py
+│   │       ├── bcef4db93c1d_add_created_by_to_dictionary_items.py
+│   │       └── e02a290b0975_create_session_context_conversation_.py
+│   ├── alembic.ini
+│   ├── backend
+│   │   └── backend.log
+│   ├── backend.log
+│   ├── backup.sh
+│   ├── chatbi-backend.service
+│   ├── database
+│   │   └── init.sql
+│   ├── debug_db.py
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── docs
+│   │   ├── data-preparation-guide.md
+│   │   └── deployment-guide.md
+│   ├── frontend
+│   │   ├── src
+│   │   │   ├── components
+│   │   │   │   └── DataPreparation
+│   │   │   │       ├── DataPreparationManager.vue
+│   │   │   │       ├── DataSourceList.vue
+│   │   │   │       ├── DataTableList.vue
+│   │   │   │       ├── DictionaryTree.vue
+│   │   │   │       └── TableRelationList.vue
+│   │   │   ├── services
+│   │   │   │   └── api.ts
+│   │   │   └── store
+│   │   │       └── modules
+│   │   │           └── dataPrep.ts
+│   │   ├── tests
+│   │   │   ├── e2e
+│   │   │   │   ├── data-source.spec.ts
+│   │   │   │   └── data-table.spec.ts
+│   │   │   └── unit
+│   │   │       ├── components
+│   │   │       │   ├── DataPreparation
+│   │   │       │   │   ├── DataPreparationManager.test.ts
+│   │   │       │   │   ├── DataSourceList.test.ts
+│   │   │       │   │   ├── DataTableList.test.ts
+│   │   │       │   │   └── TableRelationList.test.ts
+│   │   │       │   └── DictionaryTree.test.ts
+│   │   │       ├── store
+│   │   │       │   └── dataPrep.test.ts
+│   │   │       └── views
+│   │   │           └── Home.test.ts
+│   │   └── vite.config.js
+│   ├── htmlcov
+│   │   ├── class_index.html
+│   │   ├── coverage_html_cb_dd2e7eb5.js
+│   │   ├── favicon_32_cb_c827f16f.png
+│   │   ├── function_index.html
+│   │   ├── index.html
+│   │   ├── keybd_closed_cb_900cfef5.png
+│   │   ├── status.json
+│   │   ├── style_cb_9ff733b0.css
+│   │   ├── z_67f6f9a13eff1831_cache_service_py.html
+│   │   ├── z_67f6f9a13eff1831_data_preparation_service_py.html
+│   │   ├── z_67f6f9a13eff1831_data_source_service_py.html
+│   │   ├── z_67f6f9a13eff1831_database_service_py.html
+│   │   ├── z_67f6f9a13eff1831_excel_service_py.html
+│   │   ├── z_67f6f9a13eff1831_nlu_service_py.html
+│   │   ├── z_67f6f9a13eff1831_prompt_service_py.html
+│   │   ├── z_67f6f9a13eff1831_query_service_py.html
+│   │   ├── z_67f6f9a13eff1831_session_service_py.html
+│   │   ├── z_67f6f9a13eff1831_settings_service_py.html
+│   │   └── z_67f6f9a13eff1831_utils_py.html
+│   ├── logs
+│   │   ├── backend_20260126.log
+│   │   ├── backend_20260127.log
+│   │   ├── backend_20260128.log
+│   │   ├── backend_20260129.log
+│   │   ├── backend_20260130.log
+│   │   ├── backend_20260131.log
+│   │   └── backend_20260201.log
+│   ├── nginx.conf
+│   ├── public
+│   │   └── uploads
+│   │       ├── 1769526356-corrupted.xlsx
+│   │       ├── 1769526356-empty.xlsx
+│   │       ├── 1769526356-test.xls
+│   │       ├── 1769526356-test.xlsx
+│   │       ├── 1769526356-test@#$%^&*().xlsx
+│   │       ├── 1769526356-test2.xlsx
+│   │       ├── 1769526441-corrupted.xlsx
+│   │       ├── 1769526441-empty.xlsx
+│   │       ├── 1769526441-test.xls
+│   │       ├── 1769526441-test.xlsx
+│   │       ├── 1769526441-test@#$%^&*().xlsx
+│   │       ├── 1769526441-test2.xlsx
+│   │       ├── 1769526504-corrupted.xlsx
+│   │       ├── 1769526504-empty.xlsx
+│   │       ├── 1769526504-test.xls
+│   │       ├── 1769526504-test.xlsx
+│   │       ├── 1769526504-test@#$%^&*().xlsx
+│   │       ├── 1769526553-corrupted.xlsx
+│   │       ├── 1769526553-empty.xlsx
+│   │       ├── 1769526553-test.xls
+│   │       ├── 1769526553-test.xlsx
+│   │       ├── 1769526553-test@#$%^&*().xlsx
+│   │       ├── 1769526777-corrupted.xlsx
+│   │       ├── 1769526777-empty.xlsx
+│   │       ├── 1769526777-test.xls
+│   │       ├── 1769526777-test.xlsx
+│   │       ├── 1769526777-test@#$%^&*().xlsx
+│   │       ├── 1769538778-test.xlsx
+│   │       ├── 1769538779-corrupted.xlsx
+│   │       ├── 1769538779-empty.xlsx
+│   │       ├── 1769538779-test.xls
+│   │       ├── 1769538779-test.xlsx
+│   │       ├── 1769538779-test@#$%^&*().xlsx
+│   │       ├── 1769891648-corrupted.xlsx
+│   │       ├── 1769891648-empty.xlsx
+│   │       ├── 1769891648-test.xls
+│   │       ├── 1769891648-test.xlsx
+│   │       └── 1769891648-test@#$%^&*().xlsx
+│   ├── pyproject.toml
+│   ├── specs
+│   │   └── 04_ui_optimization_data_source_selector.md
+│   ├── src
+│   │   ├── __init__.py
+│   │   ├── api
+│   │   │   ├── __init__.py
+│   │   │   ├── context_api.py
+│   │   │   ├── data_source_api.py
+│   │   │   ├── data_table_api.py
+│   │   │   ├── dictionary_version.py
+│   │   │   ├── dictionary.py
+│   │   │   ├── docs.py
+│   │   │   ├── dynamic_dictionary.py
+│   │   │   ├── excel_importer_api.py
+│   │   │   ├── excel_parser_api.py
+│   │   │   ├── excel_upload.py
+│   │   │   ├── history_api.py
+│   │   │   ├── knowledge_base.py
+│   │   │   ├── knowledge_item.py
+│   │   │   ├── multi_turn_api.py
+│   │   │   ├── prompt_api.py
+│   │   │   ├── query_api.py
+│   │   │   ├── session_api.py
+│   │   │   ├── settings_api.py
+│   │   │   ├── sql_error_recovery_api.py
+│   │   │   ├── table_field.py
+│   │   │   ├── table_folder.py
+│   │   │   └── table_relation.py
+│   │   ├── cache_service.py
+│   │   ├── components
+│   │   │   └── DataPreparation
+│   │   │       ├── DataSourceList_implementation.md
+│   │   │       └── DataSourceList.vue
+│   │   ├── config.py
+│   │   ├── database_engine.py
+│   │   ├── database.py
+│   │   ├── main.py
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   ├── base.py
+│   │   │   ├── data_preparation_model.py
+│   │   │   ├── data_source_model.py
+│   │   │   ├── database_models.py
+│   │   │   ├── knowledge_base_model.py
+│   │   │   ├── knowledge_item_model.py
+│   │   │   ├── query_result_model.py
+│   │   │   ├── session_model.py
+│   │   │   └── settings_model.py
+│   │   ├── qwen_integration.py
+│   │   ├── schemas
+│   │   │   ├── data_preparation_schema.py
+│   │   │   ├── data_source_schema.py
+│   │   │   ├── data_table_schema.py
+│   │   │   ├── dictionary_version_schema.py
+│   │   │   ├── dynamic_dictionary_schema.py
+│   │   │   ├── knowledge_base_schema.py
+│   │   │   ├── knowledge_item_schema.py
+│   │   │   └── table_folder_schema.py
+│   │   ├── seed_knowledge.py
+│   │   ├── services
+│   │   │   ├── async_sync.py
+│   │   │   ├── cache_service.py
+│   │   │   ├── connection_test_service.py
+│   │   │   ├── connection_test.py
+│   │   │   ├── context_manager.py
+│   │   │   ├── context_summarizer.py
+│   │   │   ├── data_preparation_service.py
+│   │   │   ├── data_source_service.py
+│   │   │   ├── data_table_service.py
+│   │   │   ├── database_service.py
+│   │   │   ├── database_service.py.bak
+│   │   │   ├── dictionary_cache.py
+│   │   │   ├── dictionary_import_export.py
+│   │   │   ├── dictionary_version_service.py
+│   │   │   ├── dynamic_dictionary_service.py
+│   │   │   ├── excel_importer.py
+│   │   │   ├── excel_parser.py
+│   │   │   ├── excel_service.py
+│   │   │   ├── multi_turn_conversation_processor.py
+│   │   │   ├── multi_turn_handler.py
+│   │   │   ├── nlu_service.py
+│   │   │   ├── prompt_service.py
+│   │   │   ├── query_service.py
+│   │   │   ├── relation_validator.py
+│   │   │   ├── session_service.py
+│   │   │   ├── settings_service.py
+│   │   │   ├── sql_error_recovery_service.py
+│   │   │   ├── table_discovery.py
+│   │   │   ├── table_sync.py
+│   │   │   ├── token_manager.py
+│   │   │   └── utils.py
+│   │   ├── sql_generator_qwen.py
+│   │   ├── sql_generator.py
+│   │   ├── test_db_setup.py
+│   │   ├── test_db.py
+│   │   ├── utils
+│   │   │   ├── __init__.py
+│   │   │   ├── encryption.py
+│   │   │   ├── logger.py
+│   │   │   ├── performance.py
+│   │   │   └── utils.py
+│   │   └── utils.py
+│   ├── test_dependency_override.py
+│   ├── test.db
+│   ├── tests
+│   │   ├── conftest.py
+│   │   ├── data
+│   │   ├── e2e
+│   │   ├── integration
+│   │   │   ├── integration_test.py
+│   │   │   ├── test_data_source_integration.py
+│   │   │   ├── test_data_table_integration.py
+│   │   │   ├── test_dictionary_integration.py
+│   │   │   └── test_knowledge_api_integration.py
+│   │   ├── performance
+│   │   │   ├── __init__.py
+│   │   │   ├── conftest.py
+│   │   │   ├── README.md
+│   │   │   ├── test_context_performance.py
+│   │   │   ├── test_message_performance.py
+│   │   │   └── test_token_performance.py
+│   │   ├── test_context_manager.py
+│   │   ├── test_database_tables.py
+│   │   ├── test_multi_turn_handler.py
+│   │   ├── test_prompt_service.py
+│   │   ├── test_sql_error_recovery_service.py
+│   │   └── unit
+│   │       ├── mock_mysql.py
+│   │       ├── test_api_routes.py
+│   │       ├── test_connection_test.py
+│   │       ├── test_context_summarizer.py
+│   │       ├── test_data_table_api_fixed.py
+│   │       ├── test_data_table_api.py
+│   │       ├── test_dictionary_api_comprehensive.py
+│   │       ├── test_dictionary_version_api.py
+│   │       ├── test_dynamic_dictionary_api.py
+│   │       ├── test_encryption.py
+│   │       ├── test_excel_importer_api.py
+│   │       ├── test_excel_importer.py
+│   │       ├── test_excel_parser_api.py
+│   │       ├── test_excel_parser.py
+│   │       ├── test_excel_upload_api.py
+│   │       ├── test_multi_turn_conversation_processor.py
+│   │       ├── test_relation_validator.py
+│   │       ├── test_table_discovery.py
+│   │       ├── test_table_field_api.py
+│   │       ├── test_table_relation_api.py
+│   │       ├── test_table_relation_graph_api.py
+│   │       ├── test_table_sync_service.py
+│   │       └── test_token_manager.py
+│   └── uv.lock
+├── backend.log
+├── chatbi-error-overlay.jpg
+├── cleanup-test-data.sh
+├── database
+│   └── init.sql
+├── DEPLOYMENT.md
+├── frontend
+│   ├── dist
+│   │   ├── assets
+│   │   │   ├── DataSources-CX7-EyZk.css
+│   │   │   ├── DataSources-RwMoIZ9G.js
+│   │   │   ├── DataTables-DgMz5W58.css
+│   │   │   ├── DataTables-DxIe8e0K.js
+│   │   │   ├── Dictionaries-BEa21dTn.js
+│   │   │   ├── Dictionaries-BI2YAJod.css
+│   │   │   ├── Home-CWzcsKSI.css
+│   │   │   ├── Home-D5HxpovY.js
+│   │   │   ├── index-9TrUKCZ9.css
+│   │   │   ├── index-avQGJW1c.js
+│   │   │   ├── ProjectInfo-BHASJwcc.js
+│   │   │   ├── ProjectInfo-CFQMiLco.css
+│   │   │   ├── ResourcePermissions-BKwXMIrP.js
+│   │   │   ├── ResourcePermissions-CovJq8Gg.css
+│   │   │   ├── TableFields-5JWQUl0G.css
+│   │   │   ├── TableFields-CGPBzksw.js
+│   │   │   ├── TeamMembers-CLsrUYxU.css
+│   │   │   └── TeamMembers-i62fEP6Q.js
+│   │   └── index.html
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── playwright-report
+│   │   └── index.html
+│   ├── playwright.config.ts
+│   ├── public
+│   │   └── uploads
+│   │       └── sample-sales-data.xlsx
+│   ├── src
+│   │   ├── api
+│   │   │   ├── dataSourceApi.ts
+│   │   │   ├── dataTableApi.ts
+│   │   │   ├── dictionaryApi.ts
+│   │   │   └── index.ts
+│   │   ├── App.vue
+│   │   ├── App.vue.backup
+│   │   ├── assets
+│   │   │   └── styles.css
+│   │   ├── components
+│   │   │   ├── ChartRenderer
+│   │   │   ├── ChartRenderer.vue
+│   │   │   ├── Chat
+│   │   │   │   ├── ConversationHistory.vue
+│   │   │   │   ├── HeaderBar.vue
+│   │   │   │   ├── InputControls.vue
+│   │   │   │   ├── MessageStream.vue
+│   │   │   │   └── TokenUsageDisplay.vue
+│   │   │   ├── Config
+│   │   │   │   ├── __tests__
+│   │   │   │   ├── ConfigDrawer.vue
+│   │   │   │   ├── ConversationHistoryUI.vue
+│   │   │   │   ├── IntelligentToolsSection.vue
+│   │   │   │   ├── PermissionSection.vue
+│   │   │   │   ├── PromptManagement.vue
+│   │   │   │   ├── PromptManagementModal.vue
+│   │   │   │   ├── TestSimple.vue
+│   │   │   │   ├── TokenUsageStats.demo.vue
+│   │   │   │   └── TokenUsageStats.vue
+│   │   │   ├── DataPreparation
+│   │   │   │   ├── bak
+│   │   │   │   │   └── DictionaryItemList.vue.bak
+│   │   │   │   ├── ConnectionTest.vue
+│   │   │   │   ├── DatabaseTableSelector.vue
+│   │   │   │   ├── DataPreparationManager.vue
+│   │   │   │   ├── DataSourceForm.vue
+│   │   │   │   ├── DataSourceList.vue
+│   │   │   │   ├── DataSourceTable.vue
+│   │   │   │   ├── DataTableDetail.vue
+│   │   │   │   ├── DataTableForm.vue
+│   │   │   │   ├── DataTableList.vue
+│   │   │   │   ├── DataTableTree.vue
+│   │   │   │   ├── DataTableTreeSimple.vue
+│   │   │   │   ├── DictionaryForm.vue
+│   │   │   │   ├── DictionaryImportExport.vue
+│   │   │   │   ├── DictionaryItemBatchEdit.vue
+│   │   │   │   ├── DictionaryItemForm.vue
+│   │   │   │   ├── DictionaryItemList.vue
+│   │   │   │   ├── DictionaryItemList.vue.bak
+│   │   │   │   ├── DictionaryTree.vue
+│   │   │   │   ├── ExcelImport
+│   │   │   │   │   ├── DataPreview.vue
+│   │   │   │   │   ├── FileUpload.vue
+│   │   │   │   │   ├── ImportWizard.vue
+│   │   │   │   │   └── SheetSelector.vue
+│   │   │   │   ├── MIGRATION_NOTES.md
+│   │   │   │   ├── RelationForm.vue
+│   │   │   │   ├── RelationGraph.vue
+│   │   │   │   ├── RelationGraphEditor.vue
+│   │   │   │   ├── RelationList.vue
+│   │   │   │   ├── RelationTable.vue
+│   │   │   │   ├── SqlBuilder.vue
+│   │   │   │   ├── TableRelationForm.vue
+│   │   │   │   ├── TableRelationGraph.vue
+│   │   │   │   ├── TableRelationList.vue
+│   │   │   │   ├── TableSyncProgress.vue
+│   │   │   │   └── TASK_1_1_COMPLETION_SUMMARY.md
+│   │   │   ├── DataPreparation.vue
+│   │   │   ├── DataSource
+│   │   │   │   ├── DataPreviewModal.vue
+│   │   │   │   └── DataSourceSelector.vue
+│   │   │   ├── DataSourcePanel
+│   │   │   ├── DataSourcePanel.vue
+│   │   │   ├── DataTable
+│   │   │   ├── DataTable.vue
+│   │   │   ├── ExampleQuestions.vue
+│   │   │   ├── HistoryPanel
+│   │   │   ├── HistoryPanel.vue
+│   │   │   ├── KnowledgeBase
+│   │   │   │   ├── AddKnowledgeBaseModal.vue
+│   │   │   │   ├── AddKnowledgeItemModal.vue
+│   │   │   │   ├── CreateKnowledgeBaseDialog.vue
+│   │   │   │   ├── EditKnowledgeItemModal.vue
+│   │   │   │   ├── KnowledgeBaseDetail.vue
+│   │   │   │   ├── KnowledgeBaseList.vue
+│   │   │   │   ├── KnowledgeBaseManager.vue
+│   │   │   │   └── KnowledgeBasePanel.vue
+│   │   │   ├── Navigation
+│   │   │   │   └── NavigationSidebar.vue
+│   │   │   ├── NavigationSidebar.vue
+│   │   │   ├── QueryInput
+│   │   │   ├── QueryInput.vue
+│   │   │   ├── SessionChat
+│   │   │   ├── SessionChat.vue
+│   │   │   ├── Settings
+│   │   │   ├── Settings.vue
+│   │   │   ├── TableSelectorModal.vue
+│   │   │   └── VirtualList.vue
+│   │   ├── main.js
+│   │   ├── plugins
+│   │   │   ├── element-plus-test.ts
+│   │   │   └── element-plus.ts
+│   │   ├── router
+│   │   │   ├── guards.ts
+│   │   │   ├── index.ts
+│   │   │   ├── index.ts.bak
+│   │   │   └── types.ts
+│   │   ├── services
+│   │   │   ├── api.ts
+│   │   │   ├── dataSourceApi.ts
+│   │   │   ├── dataTableApi.ts
+│   │   │   ├── dictionaryApi.ts
+│   │   │   ├── index.ts
+│   │   │   └── tableRelationApi.ts
+│   │   ├── store
+│   │   │   ├── index-new.ts
+│   │   │   ├── index.js
+│   │   │   ├── index.ts
+│   │   │   ├── modules
+│   │   │   │   ├── chat.ts
+│   │   │   │   ├── config.ts
+│   │   │   │   ├── dataPrep.ts
+│   │   │   │   ├── dataPreparation.ts
+│   │   │   │   ├── dataSource.ts
+│   │   │   │   └── ui.ts
+│   │   │   ├── types
+│   │   │   │   └── common.ts
+│   │   │   └── utils
+│   │   │       └── storeUtils.ts
+│   │   ├── styles
+│   │   │   └── element-plus-theme.css
+│   │   ├── TestVue.vue
+│   │   ├── utils
+│   │   │   ├── cache.ts
+│   │   │   ├── debounce.ts
+│   │   │   ├── graphLayout.ts
+│   │   │   └── throttle.ts
+│   │   └── views
+│   │       ├── DataPrep
+│   │       │   ├── DataPreparationManager.vue
+│   │       │   ├── DataSources
+│   │       │   │   └── DataSourceList.vue
+│   │       │   ├── DataSources.vue
+│   │       │   ├── DataTables
+│   │       │   │   └── DataTableManager.vue
+│   │       │   ├── DataTables.vue
+│   │       │   ├── Dictionaries
+│   │       │   │   └── DictionaryManager.vue
+│   │       │   ├── Dictionaries.vue
+│   │       │   ├── Relations
+│   │       │   │   └── RelationManager.vue
+│   │       │   ├── TableFields.vue
+│   │       │   └── TableRelations.vue
+│   │       ├── Home.vue
+│   │       ├── ProjectInfo.vue
+│   │       ├── ResourcePermissions.vue
+│   │       └── TeamMembers.vue
+│   ├── test-api-connection.html
+│   ├── test-headerbar.html
+│   ├── test-results
+│   ├── test-table-detail.html
+│   ├── test.html
+│   ├── tests
+│   │   ├── e2e
+│   │   │   ├── core-workflow.test.mts
+│   │   │   ├── data-table.spec.ts
+│   │   │   └── dataSourceIntegration.spec.ts
+│   │   ├── integration
+│   │   ├── mocks
+│   │   │   └── icons.ts
+│   │   ├── setup
+│   │   │   ├── element-plus-stubs.ts
+│   │   │   ├── element-plus.ts
+│   │   │   ├── global-mocks.ts
+│   │   │   └── mock-element-plus.ts
+│   │   └── unit
+│   │       ├── api
+│   │       │   └── apiPaths.test.ts
+│   │       ├── basic-html.test.ts
+│   │       ├── basic-test.test.ts
+│   │       ├── basic.test.ts
+│   │       ├── components
+│   │       │   ├── Chat
+│   │       │   ├── Config
+│   │       │   │   ├── TestBasic.vue
+│   │       │   │   └── TestTemplate.vue
+│   │       │   ├── DataPreparation
+│   │       │   │   ├── DatabaseTableSelector.test.ts
+│   │       │   │   └── ExcelImport
+│   │       │   ├── DataSource
+│   │       │   │   └── DataSourceSelector.test.ts
+│   │       │   ├── DataSourceSelector.test.ts
+│   │       │   ├── Home.test.ts
+│   │       │   └── Navigation
+│   │       ├── mocks
+│   │       │   ├── ElementPlusMocks.ts
+│   │       │   └── PermissionSectionMocks.ts
+│   │       ├── router
+│   │       ├── setup
+│   │       │   ├── mocks.ts
+│   │       │   └── real-icons.ts
+│   │       ├── store
+│   │       │   ├── chat.test.ts
+│   │       │   ├── dataPrep.test.ts
+│   │       │   ├── dataPreparation.test.ts
+│   │       │   └── modules
+│   │       │       └── ui.test.ts
+│   │       └── views
+│   │           ├── DataPrep
+│   │           └── DataTableManager.minimal.test.ts
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   ├── vitest.config.test.ts
+│   └── vitest.config.ts
+├── frontend.log
+├── Gemini.md
+├── IFLOW.md
+├── knowledge-base-manager.png
+├── knowledge-base-ui.jpg
+├── PROJECT_OVERVIEW.md
+├── project_structure.txt
+├── QUICK_START.md
+├── README.md
+├── scripts
+│   ├── start.sh
+│   └── stop.sh
+├── specs
+│   ├── 01_requirements.md
+│   ├── 02_design.md
+│   └── 03_plan_and_tests.md
+├── table-relation-graph.jpg
+├── test-api-fix.sh
+├── test-create-kb.sh
+├── test-knowledge-base-api.sh
+└── test-knowledge-base-fix.html
+
+106 directories, 452 files

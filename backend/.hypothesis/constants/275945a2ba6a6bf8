@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/schemas/table_folder_schema.py
+# hypothesis_version: 6.151.4
+
+[100, '2025年', '2025年度销售数据', '2026-01-30T10:00:00Z', 'TableFolderTree', 'admin', 'children', 'created_at', 'created_by', 'description', 'example', 'id', 'name', 'parent_id', 'sort_order', 'status', 'updated_at', '创建人', '创建时间', '子文件夹列表', '排序顺序', '文件夹ID（UUID）', '文件夹名称', '文件夹描述', '是否启用', '更新时间', '父文件夹ID，支持层级结构', '销售数据', '销售相关的数据表文件夹']

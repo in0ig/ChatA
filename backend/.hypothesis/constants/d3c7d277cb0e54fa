@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/multi_turn_handler.py
+# hypothesis_version: 6.151.4
+
+[100, 'assistant', 'assistant_message', 'content', 'conversation_history', 'created_at', 'id', 'parent_message_id', 'role', 'turn', 'user', 'user_message', '我理解了您的查询，正在为您分析数据...']

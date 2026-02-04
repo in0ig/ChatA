@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/schemas/knowledge_item_schema.py
+# hypothesis_version: 6.151.4
+
+[200, 1500, 'EVENT', 'LOGIC', 'TERM', 'created_at', 'datetime', 'event_date_end', 'event_date_start', 'example_question', 'explanation', 'id', 'knowledge_base_id', 'name', 'type', 'updated_at', '事件开始时间 (仅事件知识)', '事件结束时间 (仅事件知识)', '所属知识库ID', '提问示例 (名词和业务逻辑知识)', '知识名称 (仅名词知识需要)', '解释 (所有类型必需)']

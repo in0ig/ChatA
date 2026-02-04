@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/query_service.py
+# hypothesis_version: 6.151.4
+
+[0.5, 100, 300, 1000, 3306, '/', 'MODEL_TYPE', 'assistant', 'bar', 'chartType', 'cloud', 'connection', 'connection_string', 'created_at', 'data', 'database', 'date', 'dimension', 'end', 'entities', 'excel', 'excel_data', 'file_path', 'headers', 'host', 'id', 'label', 'line', 'local', 'maxValue', 'metric', 'mysql', 'original_text', 'password', 'pie', 'port', 'raw', 'records', 'rows', 'sales', 'sql', 'start', 'table', 'time', 'time_range', 'total', 'type', 'user', 'value', '上周', '上月', '下降', '与', '为什么', '什么', '今年', '前', '去年', '变化', '周', '和', '哪些', '均值', '增长', '如何', '季度', '对比', '平均', '年', '日', '最低', '最近30天', '最近7天', '最高', '月', '本周', '本月', '相比', '趋势']

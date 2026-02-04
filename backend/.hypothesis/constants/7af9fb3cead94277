@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/models/settings_model.py
+# hypothesis_version: 6.151.4
+
+['Asia/Shanghai', 'bar', 'email', 'light', 'push', 'weekly_summary', 'zh-CN']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/prompt_service.py
+# hypothesis_version: 6.151.4
+
+[0.7, 2048, 'created_by', 'enabled', 'examples', 'id必须为正整数', 'max_tokens', 'max_tokens必须大于0', 'project_id', 'project_id不能为空', 'prompt_category', 'prompt_type', 'prompt_type不能为空', 'system', 'system_prompt', 'system_prompt不能为空', 'temperature', 'temperature必须在0-2之间', 'user_prompt_template']

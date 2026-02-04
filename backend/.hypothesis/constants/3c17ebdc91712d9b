@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/token_manager.py
+# hypothesis_version: 6.151.4
+
+[15000, 32000, 800000, 1000000, 'alibaba', 'cl100k_base', 'hard_limit', 'history', 'input', 'input_tokens', 'is_over_hard_limit', 'is_within_hard_limit', 'local', 'model_stats', 'model_type', 'output', 'output_tokens', 'remaining_tokens', 'session_id', 'summary_threshold', 'timestamp', 'total_input_tokens', 'total_output_tokens', 'total_tokens', '无法初始化 Token 计数器']

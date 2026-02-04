@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/table_folder.py
+# hypothesis_version: 6.151.4
+
+[500, '/', '/api/table-folders', '/tree', '/{folder_id}', '/{folder_id}/move', '不能将文件夹移动到其子文件夹中', '同级目录下已存在相同名称的文件夹', '文件夹下存在子文件夹，无法删除', '文件夹下存在数据表，无法删除', '文件夹不存在', '父文件夹不存在', '目标位置已存在相同名称的文件夹', '目标父文件夹不存在', '表格文件夹管理']

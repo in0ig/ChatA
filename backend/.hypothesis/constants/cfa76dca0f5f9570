@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/utils/performance.py
+# hypothesis_version: 6.151.4
+
+[1024, 'MB', 'average', 'count', 'max', 'min', 'seconds', 'unit', 'unknown', 'value']

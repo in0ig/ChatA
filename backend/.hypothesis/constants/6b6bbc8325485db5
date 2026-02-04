@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/dictionary_version.py
+# hypothesis_version: 6.151.4
+
+[100, 400, 404, 500, '/compare', '/create-from-current', '/detail/{version_id}', '/rollback', 'dictionary-version', '每页大小，1-100', '页码，从1开始']

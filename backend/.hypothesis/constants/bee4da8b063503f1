@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/schemas/data_source_schema.py
+# hypothesis_version: 6.151.4
+
+['CONNECTED', 'ClickHouse', 'DATABASE', 'DISCONNECTED', 'FAILED', 'FILE', 'MySQL', 'PostgreSQL', 'SQL Server', 'SQL_AUTH', 'TESTING', 'WINDOWS_AUTH', 'auth_type', 'connection_status', 'created_at', 'created_by', 'database_name', 'db_type', 'description', 'domain', 'file_path', 'host', 'id', 'last_test_time', 'name', 'password', 'port', 'source_type', 'status', 'updated_at', 'username', '创建人', '创建时间', '域（Windows认证使用）', '密码长度不能少于8位', '密码（加密存储）', '描述', '数据库主机', '数据库名称', '数据库端口', '数据源ID（UUID）', '数据源名称', '数据源类型：DATABASE或FILE', '是否启用', '更新时间', '最后测试时间', '用户名', '连接状态']

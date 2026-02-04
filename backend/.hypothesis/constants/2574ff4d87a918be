@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/context_manager.py
+# hypothesis_version: 6.151.4
+
+[100, 'analysis_id', 'assistant', 'cl100k_base', 'content', 'created_at', 'id', 'input_tokens', 'intent', 'last_summary_at', 'messages', 'model_usage', 'model_used', 'none', 'output_tokens', 'query_id', 'role', 'session_id', 'summary', 'token_count', 'total_input_tokens', 'total_output_tokens', 'total_tokens', 'total_turns', 'turn', 'turns', 'user', '上月', '分析', '去年', '可视化', '图表', '图表可视化', '数据', '数据分析', '时间范围', '本周', '统计']

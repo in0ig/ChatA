@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/models/knowledge_item_model.py
+# hypothesis_version: 6.151.4
+
+[200, 'EVENT', 'KnowledgeBase', 'LOGIC', 'TERM', 'created_at', 'event_date_end', 'event_date_start', 'example_question', 'explanation', 'id', 'knowledge_base_id', 'knowledge_bases.id', 'knowledge_items', 'name', 'type', 'updated_at']

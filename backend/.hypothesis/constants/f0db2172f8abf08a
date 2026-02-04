@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/database_engine.py
+# hypothesis_version: 6.151.4
+
+['10', '12345678', '127.0.0.1', '20', '30', '3306', '3600', 'DB_HOST', 'DB_MAX_OVERFLOW', 'DB_NAME', 'DB_PASSWORD', 'DB_POOL_RECYCLE', 'DB_POOL_SIZE', 'DB_POOL_TIMEOUT', 'DB_PORT', 'DB_USER', 'SELECT 1', 'SessionLocal', 'TEST_MODE', 'chatbi', 'check_same_thread', 'checkin', 'checkout', 'connect', 'data_sources', 'data_tables', 'dictionaries', 'dictionary_items', 'engine', 'engine_connect', 'execute_with_retry', 'false', 'first_connect', 'knowledge_bases', 'knowledge_items', 'pool_available', 'pool_overflow', 'pool_recycle', 'pool_size', 'pool_timeout', 'pool_used', 'prompt_config', 'root', 'session_context', 'table_fields', 'table_relations', 'test_data_table.db', 'token_usage_stats', 'true', '数据库连接池健康检查通过']

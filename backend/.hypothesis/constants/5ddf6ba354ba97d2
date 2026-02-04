@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/async_sync.py
+# hypothesis_version: 6.151.4
+
+[100, 'SyncTaskStatus', 'cancelled', 'completed', 'created', 'deleted', 'ended_at', 'error', 'failed', 'field_name', 'pending', 'progress', 'result', 'running', 'started_at', 'status', 'table_id', 'task_manager', 'updated']

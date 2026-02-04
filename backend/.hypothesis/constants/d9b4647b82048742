@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/schemas/dynamic_dictionary_schema.py
+# hypothesis_version: 6.151.4
+
+[3600, 'ALTER', 'CREATE', 'DELETE', 'DROP', 'INSERT', 'SELECT', 'SQL查询语句', 'SQL查询语句不能为空', 'TRUNCATE', 'UPDATE', '\\b', 'key_field', 'sql_query', 'value_field', '值字段名', '创建时间', '删除字典项数量', '刷新时间', '刷新间隔（秒）', '只允许SELECT查询语句', '字典ID', '字段名不能为空', '当前页码', '总字典项数量', '总数量', '总记录数', '执行时间（毫秒）', '数据源ID', '新增字典项数量', '是否成功', '更新字典项数量', '更新时间', '最后刷新时间', '每页大小', '示例数据（最多10条）', '结果消息', '配置ID', '配置列表', '键字段名']

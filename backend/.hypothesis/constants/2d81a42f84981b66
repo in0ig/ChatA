@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/excel_importer_api.py
+# hypothesis_version: 6.151.4
+
+[0.0, 400, 404, 422, 500, '.xls', '.xlsx', '/api/data-tables', '/import-excel', 'Excel导入', 'completed', 'end_time', 'errors', 'failed', 'job_id', 'message', 'pending', 'progress_percent', 'result', 'start_time', 'status', 'success', '表名不能为空']

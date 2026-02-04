@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/knowledge_base.py
+# hypothesis_version: 6.151.4
+
+['/', '/{id}', 'knowledge-bases', '知识库名称已存在', '知识库未找到']

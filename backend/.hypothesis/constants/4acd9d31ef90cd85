@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/relation_validator.py
+# hypothesis_version: 6.151.4
+
+['circular_relation', 'dependencies_ok', 'dependency_issues', 'errors', 'field_types_match', 'is_valid', 'relation_id', 'warnings']

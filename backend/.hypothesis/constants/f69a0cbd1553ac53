@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/nlu_service.py
+# hypothesis_version: 6.151.4
+
+['all', 'amount', 'area', 'channel', 'city', 'cost', 'customer', 'days', 'department', 'dimension', 'end', 'entities', 'last month', 'last quarter', 'last year', 'metric', 'month', 'orders', 'product', 'profit', 'quantity', 'quarter', 'region', 'revenue', 'sales', 'start', 'text', 'this month', 'this quarter', 'this year', 'time_range', 'type', 'users', 'visits', 'year', '上一年', '上个季度', '上个月', '上季度', '上月', '产品', '今年', '利润', '区域', '去年', '地区', '城市', '季度', '客户', '年份', '成本', '收入', '数量', '月份', '本季度', '本年', '本月', '渠道', '用户数', '营收', '订单数', '访问量', '这个季度', '这个月', '部门', '销售', '销售额']

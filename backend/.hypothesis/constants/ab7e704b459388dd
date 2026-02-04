@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/cache_service.py
+# hypothesis_version: 6.151.4
+
+[100, 300, 1000, 'Cache cleared', 'cache_entries', 'hit_rate', 'hits', 'max_size', 'misses', 'size', 'utf-8']

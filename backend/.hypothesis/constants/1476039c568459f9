@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/multi_turn_conversation_processor.py
+# hypothesis_version: 6.151.4
+
+['\n\n建议：', '\n\n摘要：', '\n\n洞察：', ', ', 'assistant', 'bar', 'chart_type', 'charts', 'content', 'data', 'insights', 'interpretation', 'line', 'local', 'parent_message_id', 'query', 'report', 'response', 'role', 'sales_data', 'suggestions', 'summary', 'table', 'tables', 'type', 'user', '为什么', '分析', '原因', '图表', '建议进一步分析时间维度', '报表', '数据摘要', '根据您的查询，数据呈现趋势性变化', '汇总', '统计', '解读', '解释', '说明', '趋势']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/schemas/knowledge_base_schema.py
+# hypothesis_version: 6.151.4
+
+['EVENT', 'GLOBAL', 'LOGIC', 'TABLE', 'TERM', 'created_at', 'datetime', 'description', 'id', 'name', 'scope', 'status', 'table_id', 'type', 'updated_at']

@@ -1,0 +1,1 @@
+import{e as o,c as n,a,o as s,_ as t}from"./index-UzuFSHw5.js";const r={class:"dictionary-manager"},c=o({__name:"DictionaryManager",setup(_){return(i,e)=>(s(),n("div",r,[...e[0]||(e[0]=[a("div",{class:"placeholder"},[a("h3",null,"字典管理主页"),a("p",null,"此组件将在任务 4.1 中实现，左侧字典树 + 右侧字典项列表")],-1)])]))}}),p=t(c,[["__scopeId","data-v-26820a07"]]);export{p as default};

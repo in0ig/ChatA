@@ -1,0 +1,616 @@
+<template>
+  <div id="app" class="chatbi-app">
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+      <div class="logo">ChatBI</div>
+      <div class="user-info">
+        <span>欢迎，用户</span>
+        <button class="settings-btn" @click="openSettings">设置</button>
+      </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+      <!-- 左边侧边栏 -->
+      <div class="sidebar">
+        <DataSourcePanel 
+          :data-sources="dataSources" 
+          :active-source="activeDataSource"
+          @activate="activateDataSource"
+          @upload="handleFileUpload"
+        />
+        
+        <DataPreparation @action="handleAction" />
+        
+        <HistoryPanel 
+          :history="historyQueries" 
+          @load="loadQuery"
+        />
+        
+        <SessionChat 
+          :sessions="sessions" 
+          :current-session="currentSession"
+          @switch="switchSession"
+          @new-session="createNewSession"
+        />
+      </div>
+
+      <!-- 主工作区 -->
+      <div class="workspace">
+        <QueryInput 
+          v-model="currentQuery" 
+          @query="processQuery"
+        />
+        
+        <div class="results">
+          <!-- 无数据源状态 -->
+          <div class="no-data-source" v-if="!activeDataSource">
+            <p>请先上传并激活一个Excel数据源</p>
+            <button class="btn-primary" @click="document.getElementById('file-upload').click()">上传Excel文件</button>
+          </div>
+          
+          <!-- 成功结果 -->
+          <div v-else-if="result" class="result-content">
+            <!-- AI 解释 -->
+            <div class="ai-response">
+              <p>{{ aiExplanation }}</p>
+            </div>
+            
+            <!-- 图表 -->
+            <ChartRenderer 
+              :chart-title="result.chartTitle" 
+              :data="result.data" 
+              :max-value="result.maxValue"
+            />
+            
+            <!-- 数据表格 -->
+            <DataTable 
+              :headers="result.headers" 
+              :rows="result.rows"
+            />
+          </div>
+          
+          <!-- 初始状态 -->
+          <div v-else class="empty-state">
+            <p>请输入您的问题，让 AI 助您分析数据</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 全局加载遮罩 -->
+    <div v-if="uiStore.isLoading" class="global-loading-overlay">
+      <div class="loading-spinner"></div>
+      <p>{{ uiStore.loadingMessage }}</p>
+    </div>
+    
+    <!-- 设置面板（懒加载） -->
+    <SettingsDrawer 
+      v-if="isSettingsOpen"
+      :visible="isSettingsOpen"
+      @close="closeSettings"
+    />
+    
+    <!-- Prompt 管理模态框 -->
+    <PromptManagementModal />
+  </div>
+</template>
+
+<script>
+import { ref, defineAsyncComponent } from 'vue'
+import { useUIStore } from '@/store/modules/ui'
+import QueryInput from '@/components/QueryInput.vue'
+import ChartRenderer from '@/components/ChartRenderer.vue'
+import DataTable from '@/components/DataTable.vue'
+import HistoryPanel from '@/components/HistoryPanel.vue'
+import DataSourcePanel from '@/components/DataSourcePanel.vue'
+import DataPreparation from '@/components/DataPreparation.vue'
+import SessionChat from '@/components/SessionChat.vue'
+
+// 懒加载非关键组件
+const SettingsDrawer = defineAsyncComponent(() => import('@/components/Settings.vue'))
+const PromptManagementModal = defineAsyncComponent(() => import('@/components/Config/PromptManagementModal.vue'))
+
+export default {
+  name: 'App',
+  components: {
+    QueryInput,
+    ChartRenderer,
+    DataTable,
+    HistoryPanel,
+    DataSourcePanel,
+    DataPreparation,
+    SessionChat,
+    SettingsDrawer,
+    PromptManagementModal
+  },
+  setup() {
+    const uiStore = useUIStore()
+    const isSettingsOpen = ref(false)
+    
+    const openSettings = () => {
+      isSettingsOpen.value = true
+    }
+    
+    const closeSettings = () => {
+      isSettingsOpen.value = false
+    }
+    
+    return {
+      uiStore,
+      isSettingsOpen,
+      openSettings,
+      closeSettings
+    }
+  },
+  data() {
+    return {
+      currentQuery: '',
+      result: null,
+      aiExplanation: '',
+      historyQueries: [
+        '上月销售额最高的产品是什么？',
+        '各区域销售对比',
+        '客户转化率趋势'
+      ],
+      dataSources: [],
+      activeDataSource: null,
+      sessions: [
+        { id: 'sess_1', name: '新会话' },
+        { id: 'sess_2', name: '会话1' }
+      ],
+      currentSession: null
+    }
+  },
+  methods: {
+    activateDataSource(source) {
+      this.activeDataSource = source;
+      this.result = null;
+      this.aiExplanation = '';
+    },
+    handleFileUpload(file) {
+      // TODO: 实现文件上传逻辑
+    },
+    async processQuery(query) {
+      if (!query.trim()) return;
+      if (!this.activeDataSource) {
+        this.uiStore.showToast('请先上传并激活一个数据源', 'error');
+        return;
+      }
+      
+      this.uiStore.setLoading(true, '正在分析您的问题...');
+      this.result = null;
+      this.aiExplanation = '';
+      
+      try {
+        const response = await fetch('/api/query', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ text: query })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.details || '查询处理失败');
+        }
+        
+        const data = await response.json();
+        this.result = data.result;
+        this.aiExplanation = data.result.raw.length > 0 ? 
+          `根据销售数据分析，${data.result.data[0].label} 是${data.result.chartTitle}中表现最佳的产品...` :
+          '已成功解析您的查询并返回相关数据。';
+        
+        // 添加到历史记录
+        if (!this.historyQueries.includes(query)) {
+          this.historyQueries.unshift(query);
+          if (this.historyQueries.length > 5) {
+            this.historyQueries.pop();
+          }
+        }
+      } catch (error) {
+        this.uiStore.showToast(error.message, 'error');
+      } finally {
+        this.uiStore.setLoading(false);
+      }
+    },
+    loadQuery(query) {
+      this.currentQuery = query;
+      this.processQuery(query);
+    },
+    handleAction(action) {
+      // TODO: 处理数据准备操作
+    },
+    switchSession(session) {
+      this.currentSession = session;
+    },
+    createNewSession() {
+      const newSession = { id: `sess_${Date.now()}`, name: '新会话' };
+      this.sessions.unshift(newSession);
+      this.currentSession = newSession;
+    }
+  }
+}
+</script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.chatbi-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+.logo {
+  font-size:24px;
+  font-weight: 700;
+  color: #1890ff;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap:15px;
+}
+
+.settings-btn {
+  background-color: #fff;
+  color: #333;
+  border:1px solid #ddd;
+  padding:6px 12px;
+  border-radius:4px;
+  cursor: pointer;
+}
+
+.settings-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.main-content {
+  display: flex;
+  flex:1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width:280px;
+  background-color: #fff;
+  padding:20px;
+  border-right:1px solid #eee;
+  overflow-y: auto;
+}
+
+.workspace {
+  flex:1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.results {
+  flex:1;
+  padding:20px;
+  overflow-y: auto;
+}
+
+.no-data-source {
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+}
+
+.no-data-source p {
+  margin-top:15px;
+  text-align: center;
+}
+
+.no-data-source button {
+  margin-top:20px;
+}
+
+.result-content {
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  gap:30px;
+}
+
+.ai-response {
+  padding:20px;
+  background-color: #f8f9ff;
+  border-radius:12px;
+  border-left:4px solid #1890ff;
+}
+
+.ai-response p {
+  color: #333;
+  line-height: 1.8;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  padding:12px 24px;
+  border-radius:8px;
+  font-size:16px;
+  font-weight:500;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0978e0;
+}
+
+.empty-state {
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+}
+
+.empty-state p {
+  font-size:16px;
+}
+
+/* 全局加载遮罩样式 */
+.global-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  color: white;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1890ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 响应式设计 */
+/* 手机屏幕 (< 768px) */
+@media (max-width: 767px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width:100%;
+    height:auto;
+    border-right:none;
+    border-bottom:1px solid #eee;
+    position: relative;
+  }
+  
+  .workspace {
+    padding: 10px;
+  }
+  
+  .navbar {
+    padding: 10px 15px;
+  }
+  
+  .logo {
+    font-size: 20px;
+  }
+  
+  .user-info {
+    gap: 10px;
+  }
+  
+  .settings-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  
+  .results {
+    padding: 10px;
+  }
+  
+  .ai-response {
+    padding: 15px;
+  }
+  
+  .btn-primary {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .empty-state p,
+  .no-data-source p {
+    font-size: 14px;
+  }
+}
+
+/* 平板屏幕 (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .workspace {
+    padding: 15px;
+  }
+  
+  .navbar {
+    padding: 12px 20px;
+  }
+  
+  .logo {
+    font-size: 22px;
+  }
+  
+  .user-info {
+    gap: 12px;
+  }
+  
+  .settings-btn {
+    padding: 6px 12px;
+    font-size: 15px;
+  }
+  
+  .results {
+    padding: 15px;
+  }
+  
+  .ai-response {
+    padding: 18px;
+  }
+  
+  .btn-primary {
+    padding: 11px 22px;
+    font-size: 15px;
+  }
+  
+  .empty-state p,
+  .no-data-source p {
+    font-size: 15px;
+  }
+}
+
+/* 桌面屏幕 (1025px+) */
+@media (min-width: 1025px) {
+  .sidebar {
+    width: 280px;
+    height: 100%;
+    border-right: 1px solid #eee;
+    overflow-y: auto;
+  }
+  
+  .workspace {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .navbar {
+    padding: 15px 30px;
+  }
+  
+  .logo {
+    font-size: 24px;
+  }
+  
+  .user-info {
+    gap: 15px;
+  }
+  
+  .settings-btn {
+    padding: 6px 12px;
+    font-size: 16px;
+  }
+  
+  .results {
+    padding: 20px;
+  }
+  
+  .ai-response {
+    padding: 20px;
+  }
+  
+  .btn-primary {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+  
+  .empty-state p,
+  .no-data-source p {
+    font-size: 16px;
+  }
+}
+
+/* 大桌面屏幕 (1920px+) */
+@media (min-width: 1920px) {
+  .sidebar {
+    width: 320px;
+  }
+  
+  .workspace {
+    padding: 30px;
+  }
+  
+  .navbar {
+    padding: 20px 40px;
+  }
+  
+  .logo {
+    font-size: 28px;
+  }
+  
+  .settings-btn {
+    padding: 8px 16px;
+    font-size: 18px;
+  }
+  
+  .results {
+    padding: 30px;
+  }
+  
+  .ai-response {
+    padding: 25px;
+  }
+  
+  .btn-primary {
+    padding: 14px 28px;
+    font-size: 18px;
+  }
+  
+  .empty-state p,
+  .no-data-source p {
+    font-size: 18px;
+  }
+}
+</style>

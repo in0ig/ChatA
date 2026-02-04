@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/dictionary_cache.py
+# hypothesis_version: 6.151.4
+
+[100, '0', '1', 'cache_version', 'connected', 'connected_clients', 'dict', 'dictionaries', 'enabled', 'hit_rate', 'item', 'items', 'keyspace_hits', 'keyspace_misses', 'redis_info', 'total_keys', 'tree', 'ttl', 'used_memory', 'used_memory_human', 'utf-8']

@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/excel_parser_api.py
+# hypothesis_version: 6.151.4
+
+[100, 400, 1000, '/api/excel', '/generate-schema', '/sheet/preview', '/sheet/validate', '/structure', 'Excel 文件路径', 'Excel解析', 'Sheet 名称', 'data', 'success', '目标表名', '预览行数限制']

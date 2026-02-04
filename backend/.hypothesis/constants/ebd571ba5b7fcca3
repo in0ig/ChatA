@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/excel_importer.py
+# hypothesis_version: 6.151.4
+
+[100, 1000, ' NOT NULL', ' NULL', ' PRIMARY KEY', ', ', 'DATETIME', 'DECIMAL', 'INT', 'TEXT', 'already exists', 'cancelled', 'comment', 'completed', 'completed_rows', 'connection', 'database', 'end_time', 'errors', 'exists', 'failed', 'failed_count', 'fields', 'job_id', 'name', 'nullable', 'pending', 'primary_key', 'progress_percent', 'records', 'running', 'start_time', 'status', 'success_count', 'table', 'table_name', 'total_rows', 'type']

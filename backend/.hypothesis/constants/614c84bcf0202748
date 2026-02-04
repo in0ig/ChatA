@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/models/knowledge_base_model.py
+# hypothesis_version: 6.151.4
+
+[200, 1000, 'EVENT', 'GLOBAL', 'KnowledgeItem', 'LOGIC', 'TABLE', 'TERM', 'all, delete-orphan', 'created_at', 'description', 'id', 'knowledge_base', 'knowledge_bases', 'name', 'scope', 'status', 'table_id', 'type', 'updated_at']

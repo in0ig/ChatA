@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/datasources_api.py
+# hypothesis_version: 6.148.7
+
+[100, 201, 204, '/', '/api/datasources', '/test', '/{source_id}', 'ChatBI Data Sources', '启用状态：true/false', '搜索关键词（名称、描述）', '数据源类型：DATABASE/FILE', '每页数量，1-100', '页码，从1开始']

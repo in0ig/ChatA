@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/settings_api.py
+# hypothesis_version: 6.151.4
+
+[400, 500, '/', '/language', '/notifications', '/theme', 'Settings', 'auto', 'dark', 'en-US', 'language', 'light', 'message', 'theme', 'zh-CN']

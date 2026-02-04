@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/services/dictionary_version_service.py
+# hypothesis_version: 6.151.4
+
+['added', 'change_frequency', 'change_type', 'created', 'created_at', 'deleted', 'description', 'extra_data', 'id', 'item_key', 'item_value', 'items', 'latest_change_time', 'page', 'page_size', 'restored', 'rollback', 'sort_order', 'statistics', 'status', 'system', 'total', 'total_versions', 'updated', 'version_info', '比较的版本必须属于同一个字典']

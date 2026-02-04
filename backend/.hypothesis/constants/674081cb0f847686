@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/data_table_api.py
+# hypothesis_version: 6.151.4
+
+[100, 201, 204, 400, 404, 409, 422, 500, '/', '/{table_id}', '/{table_id}/columns', '/{table_id}/refresh', '/{table_id}/sync', 'cancelled', 'ended_at', 'error', 'message', 'progress', 'result', 'started_at', 'status', 'table_id', 'task_id', '任务ID与数据表不匹配', '任务已处于完成或取消状态', '创建数据表失败', '删除数据表失败', '刷新数据表信息失败', '同步任务不存在', '同步任务已取消', '启动同步任务失败', '启用状态：true/false', '已取消', '搜索关键词（表名）', '数据源ID，用于筛选', '数据源不存在', '数据表不存在', '数据表管理', '更新数据表失败', '每页数量，1-100', '获取字段列表失败', '获取数据表列表失败', '获取数据表详情失败', '表结构同步任务已启动，将在后台执行', '页码，从1开始']

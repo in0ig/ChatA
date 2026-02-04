@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/sql_generator_qwen.py
+# hypothesis_version: 6.151.4
+
+['1.0', 'MODEL_TYPE', 'QWEN_API_KEY', 'QWEN_MODEL_NAME', 'capabilities', 'cloud', 'entities', 'language', 'local', 'model_name', 'qwen-agent', 'sales_data', 'time_range', 'version', 'zh-CN', '变化', '均值', '增长', '平均', '最多', '最高', '销售额']

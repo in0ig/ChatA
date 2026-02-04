@@ -1,0 +1,4 @@
+# file: /Users/zhanh391/PC/ChatBI/backend/src/api/dynamic_dictionary.py
+# hypothesis_version: 6.151.4
+
+[100, 400, 404, 500, '/', '/test-query', '/{dictionary_id}', 'last_refresh_time', 'message', 'needs_refresh', 'refresh_interval', '创建动态字典配置', '创建配置失败', '删除动态字典配置', '删除成功', '删除配置失败', '刷新字典失败', '动态字典配置', '动态字典配置不存在', '手动刷新动态字典', '更新动态字典配置', '更新配置失败', '检查刷新状态', '检查刷新状态失败', '每页大小', '测试SQL查询', '测试查询失败', '获取动态字典配置', '获取动态字典配置列表', '获取配置列表失败', '获取配置失败', '页码']
