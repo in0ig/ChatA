@@ -1,0 +1,55 @@
+{
+  "versions": {
+    "test_template": [
+      {
+        "version_id": "test_template_1770257984_9dc11a76",
+        "name": "test_template",
+        "content": "Hello {{name}}!",
+        "variables": [
+          "name"
+        ],
+        "version": "draft",
+        "created_at": "2026-02-05T10:19:44.248275",
+        "created_by": "test_user",
+        "description": "测试模板",
+        "metadata": {},
+        "parent_version_id": null,
+        "metrics": {
+          "usage_count": 0,
+          "success_rate": 0.0,
+          "avg_response_time": 0.0,
+          "user_satisfaction": 0.0,
+          "error_rate": 0.0,
+          "token_efficiency": 0.0,
+          "last_updated": "2026-02-05T10:19:44.248282"
+        }
+      }
+    ],
+    "api_test": [
+      {
+        "version_id": "api_test_1770258159_0b583d76",
+        "name": "api_test",
+        "content": "Test {{msg}}",
+        "variables": [
+          "msg"
+        ],
+        "version": "draft",
+        "created_at": "2026-02-05T10:22:39.688760",
+        "created_by": "test",
+        "description": "",
+        "metadata": {},
+        "parent_version_id": null,
+        "metrics": {
+          "usage_count": 0,
+          "success_rate": 0.0,
+          "avg_response_time": 0.0,
+          "user_satisfaction": 0.0,
+          "error_rate": 0.0,
+          "token_efficiency": 0.0,
+          "last_updated": "2026-02-05T10:22:39.688772"
+        }
+      }
+    ]
+  },
+  "ab_tests": {}
+}

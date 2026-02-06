@@ -259,18 +259,30 @@ const filteredDictionaries = computed(() => {
 })
 
 const filteredDictionaryItems = computed(() => {
-  if (!dictionaryItems.value || !selectedDictionaryId.value) return []
+  console.log('🔍 DictionaryManager - filteredDictionaryItems computed called')
+  console.log('🔍 DictionaryManager - dictionaryItems.value:', dictionaryItems.value)
+  console.log('🔍 DictionaryManager - selectedDictionaryId.value:', selectedDictionaryId.value)
+  
+  if (!dictionaryItems.value || !selectedDictionaryId.value) {
+    console.log('🚫 DictionaryManager - filteredDictionaryItems: missing data or selectedId')
+    return []
+  }
+  
   const items = dictionaryItems.value.filter(item => item.dictionary_id === selectedDictionaryId.value)
+  console.log('🔍 DictionaryManager - filteredDictionaryItems: filtered items for dictionary', selectedDictionaryId.value, ':', items)
   
   if (!itemSearchText.value) {
+    console.log('🔍 DictionaryManager - filteredDictionaryItems: no search text, returning', items.length, 'items')
     return items
   }
   
-  return items.filter(item => 
+  const searchFiltered = items.filter(item => 
     item.item_key.toLowerCase().includes(itemSearchText.value.toLowerCase()) ||
     item.item_value.toLowerCase().includes(itemSearchText.value.toLowerCase()) ||
     item.description?.toLowerCase().includes(itemSearchText.value.toLowerCase())
   )
+  console.log('🔍 DictionaryManager - filteredDictionaryItems: search filtered', searchFiltered.length, 'items')
+  return searchFiltered
 })
 
 // 方法
@@ -294,13 +306,18 @@ const refreshData = async () => {
 }
 
 const loadDictionaryItems = async () => {
-  if (!selectedDictionaryId.value) return
+  if (!selectedDictionaryId.value) {
+    console.log('🚫 DictionaryManager - loadDictionaryItems: no selectedDictionaryId')
+    return
+  }
   
+  console.log('🔄 DictionaryManager - loadDictionaryItems: starting for dictionaryId:', selectedDictionaryId.value)
   itemsLoading.value = true
   try {
     await dataPreparationStore.fetchDictionaryItems(selectedDictionaryId.value)
+    console.log('✅ DictionaryManager - loadDictionaryItems: success, items count:', dataPreparationStore.dictionaryItems.length)
   } catch (error: any) {
-    console.error('加载字典项失败:', error)
+    console.error('❌ DictionaryManager - loadDictionaryItems: error:', error)
     ElMessage.error('加载字典项失败: ' + (error.message || '未知错误'))
   } finally {
     itemsLoading.value = false
@@ -319,7 +336,9 @@ const onItemSearch = () => {
 
 // 字典选择
 const onDictionarySelect = (dictionaryId: string) => {
+  console.log('🎯 DictionaryManager - onDictionarySelect called with:', dictionaryId)
   selectedDictionaryId.value = dictionaryId
+  console.log('🎯 DictionaryManager - selectedDictionaryId set to:', selectedDictionaryId.value)
 }
 
 // 字典管理
@@ -432,11 +451,17 @@ const onDeleteItem = async (item: DictionaryItem) => {
       return
     }
     
+    console.log('🗑️ DictionaryManager - onDeleteItem: deleting item', item.id, 'from dictionary', selectedDictionaryId.value)
     await dataPreparationStore.deleteDictionaryItem(item.id, selectedDictionaryId.value)
+    console.log('✅ DictionaryManager - onDeleteItem: delete successful, refreshing data')
+    
+    // 🔧 FIX: 删除成功后立即刷新字典项列表
+    await loadDictionaryItems()
+    
     ElMessage.success('字典项删除成功')
   } catch (error: any) {
     if (error !== 'cancel') {
-      console.error('删除字典项失败:', error)
+      console.error('❌ DictionaryManager - onDeleteItem: delete failed:', error)
       ElMessage.error('删除失败: ' + (error.message || '未知错误'))
     }
   }
@@ -548,11 +573,15 @@ const onBatchEditSubmit = async (formData: { status: 'ENABLED' | 'DISABLED' }) =
 
 
 // 监听字典选择变化
-watch(selectedDictionaryId, (newId) => {
+watch(selectedDictionaryId, (newId, oldId) => {
+  console.log('👀 DictionaryManager - watch selectedDictionaryId:', { oldId, newId })
   if (newId) {
     itemSearchText.value = ''
     selectedItems.value = []
+    console.log('🔄 DictionaryManager - watch: calling loadDictionaryItems for:', newId)
     loadDictionaryItems()
+  } else {
+    console.log('🚫 DictionaryManager - watch: newId is null/undefined')
   }
 })
 

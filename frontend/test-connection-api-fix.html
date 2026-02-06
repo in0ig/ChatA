@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据源连接 API 修复测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; background: #f0f8f0; padding: 10px; border-radius: 3px; }
+        .error { color: red; background: #fff0f0; padding: 10px; border-radius: 3px; }
+        .info { color: blue; background: #f0f0ff; padding: 10px; border-radius: 3px; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; border-radius: 3px; }
+        .form-group { margin: 10px 0; }
+        label { display: inline-block; width: 120px; }
+        input, select { padding: 5px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>数据源连接 API 修复测试</h1>
+    
+    <div class="test-section">
+        <h3>问题描述</h3>
+        <div class="info">
+            <p><strong>原问题：</strong> 点击测试连接提示"数据源名称不能为空"，但实际已填写</p>
+            <p><strong>原因：</strong> 前端发送的请求缺少后端必需的字段（name, source_type, created_by等）</p>
+            <p><strong>修复：</strong> 更新前端 API 调用，发送完整的请求格式</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>测试表单</h3>
+        <div class="form-group">
+            <label>数据源名称:</label>
+            <input type="text" id="name" value="demo_datasource">
+        </div>
+        <div class="form-group">
+            <label>数据库类型:</label>
+            <select id="type">
+                <option value="mysql">MySQL</option>
+                <option value="sqlserver">SQL Server</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>主机地址:</label>
+            <input type="text" id="host" value="127.0.0.1">
+        </div>
+        <div class="form-group">
+            <label>端口:</label>
+            <input type="number" id="port" value="3306">
+        </div>
+        <div class="form-group">
+            <label>数据库名:</label>
+            <input type="text" id="database" value="mock_data">
+        </div>
+        <div class="form-group">
+            <label>用户名:</label>
+            <input type="text" id="username" value="root">
+        </div>
+        <div class="form-group">
+            <label>密码:</label>
+            <input type="password" id="password" value="password">
+        </div>
+        
+        <button onclick="testOldFormat()">测试旧格式（会失败）</button>
+        <button onclick="testNewFormat()">测试新格式（修复后）</button>
+        <button onclick="testViaFrontendAPI()">测试前端 API</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试结果</h3>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function getFormData() {
+            return {
+                name: document.getElementById('name').value,
+                type: document.getElementById('type').value,
+                host: document.getElementById('host').value,
+                port: parseInt(document.getElementById('port').value),
+                database: document.getElementById('database').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+        }
+
+        async function testOldFormat() {
+            const resultDiv = document.getElementById('result');
+            const formData = getFormData();
+            
+            resultDiv.innerHTML = '<p>测试旧格式（缺少必需字段）...</p>';
+
+            try {
+                // 旧格式：只发送连接相关字段，缺少 name, source_type, created_by
+                const oldRequest = {
+                    type: formData.type,
+                    host: formData.host,
+                    port: formData.port,
+                    database: formData.database,
+                    username: formData.username,
+                    password: formData.password
+                };
+
+                console.log('旧格式请求:', oldRequest);
+
+                const response = await fetch('http://localhost:8000/api/datasources/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(oldRequest)
+                });
+
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 旧格式测试结果</h4>
+                        <p><strong>状态码:</strong> ${response.status}</p>
+                        <p><strong>预期:</strong> 应该返回 422 错误（缺少必需字段）</p>
+                        <p><strong>实际响应:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 旧格式网络错误</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function testNewFormat() {
+            const resultDiv = document.getElementById('result');
+            const formData = getFormData();
+            
+            resultDiv.innerHTML = '<p>测试新格式（修复后）...</p>';
+
+            try {
+                // 新格式：包含所有必需字段
+                const newRequest = {
+                    name: formData.name,
+                    source_type: 'DATABASE',
+                    db_type: formData.type === 'mysql' ? 'MySQL' : 'SQL Server',
+                    host: formData.host,
+                    port: formData.port,
+                    database_name: formData.database,
+                    auth_type: 'SQL_AUTH',
+                    username: formData.username,
+                    password: formData.password,
+                    created_by: 'system'
+                };
+
+                console.log('新格式请求:', newRequest);
+
+                const response = await fetch('http://localhost:8000/api/datasources/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newRequest)
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>✅ 新格式测试成功</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <p><strong>结果:</strong> API 调用成功，不再报"数据源名称不能为空"错误</p>
+                            <p><strong>响应数据:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ 新格式测试失败</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 新格式网络错误</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function testViaFrontendAPI() {
+            const resultDiv = document.getElementById('result');
+            const formData = getFormData();
+            
+            resultDiv.innerHTML = '<p>通过前端 API 测试...</p>';
+
+            try {
+                // 模拟前端 DataSourceConfig 格式
+                const config = {
+                    name: formData.name,
+                    type: formData.type,
+                    host: formData.host,
+                    port: formData.port,
+                    database: formData.database,
+                    username: formData.username,
+                    password: formData.password,
+                    connectionPool: {
+                        min: 5,
+                        max: 20,
+                        timeout: 30
+                    }
+                };
+
+                // 使用修复后的前端 API 格式
+                const request = {
+                    name: config.name,
+                    source_type: 'DATABASE',
+                    db_type: config.type === 'mysql' ? 'MySQL' : 'SQL Server',
+                    host: config.host,
+                    port: config.port,
+                    database_name: config.database,
+                    auth_type: 'SQL_AUTH',
+                    username: config.username,
+                    password: config.password,
+                    created_by: 'system'
+                };
+
+                console.log('前端 API 格式请求:', request);
+
+                const response = await fetch('http://localhost:8000/api/datasources/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(request)
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>✅ 前端 API 测试成功</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <p><strong>结果:</strong> 前端 API 修复成功！</p>
+                            <p><strong>响应数据:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ 前端 API 测试失败</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 前端 API 网络错误</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

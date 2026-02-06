@@ -1,1 +1,0 @@
-import{e as t,f as o,c as n,a,t as r,o as c,_ as l}from"./index-UzuFSHw5.js";const p={class:"placeholder-page"},_=t({__name:"TeamMembers",setup(m){const s=o("此功能正在开发中...");return(d,e)=>(c(),n("div",p,[e[0]||(e[0]=a("h1",null,"项目成员管理",-1)),a("p",null,r(s.value),1)]))}}),i=l(_,[["__scopeId","data-v-949a7ab0"]]);export{i as default};

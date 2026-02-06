@@ -30,8 +30,8 @@
 
     <el-form-item label="状态" prop="status">
       <el-radio-group v-model="form.status">
-        <el-radio label="ENABLED">启用</el-radio>
-        <el-radio label="DISABLED">禁用</el-radio>
+        <el-radio value="ENABLED">启用</el-radio>
+        <el-radio value="DISABLED">禁用</el-radio>
       </el-radio-group>
     </el-form-item>
 

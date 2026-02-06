@@ -5,7 +5,7 @@ export const dataTableApi = {
   // 数据表管理
   async getDataTables(): Promise<ApiResponse<DataTable[]>> {
     try {
-      const response = await apiClient.get('/api/data-tables')
+      const response = await apiClient.get('/data-tables')
       return {
         success: true,
         data: response.data
@@ -20,7 +20,7 @@ export const dataTableApi = {
 
   async getDataTablesByDataSource(dataSourceId: number): Promise<ApiResponse<DataTable[]>> {
     try {
-      const response = await apiClient.get(`/api/datasources/${dataSourceId}/tables`)
+      const response = await apiClient.get(`/datasources/${dataSourceId}/tables`)
       return {
         success: true,
         data: response.data
@@ -35,7 +35,7 @@ export const dataTableApi = {
 
   async createDataTable(dataTable: Omit<DataTable, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<DataTable>> {
     try {
-      const response = await apiClient.post('/api/data-tables', dataTable)
+      const response = await apiClient.post('/data-tables', dataTable)
       return {
         success: true,
         data: response.data
@@ -50,7 +50,7 @@ export const dataTableApi = {
 
   async updateDataTable(id: number, dataTable: Partial<DataTable>): Promise<ApiResponse<DataTable>> {
     try {
-      const response = await apiClient.put(`/api/data-tables/${id}`, dataTable)
+      const response = await apiClient.put(`/data-tables/${id}`, dataTable)
       return {
         success: true,
         data: response.data
@@ -65,7 +65,7 @@ export const dataTableApi = {
 
   async deleteDataTable(id: number): Promise<ApiResponse<void>> {
     try {
-      await apiClient.delete(`/api/data-tables/${id}`)
+      await apiClient.delete(`/data-tables/${id}`)
       return {
         success: true,
         message: 'Data table deleted successfully'
@@ -81,7 +81,7 @@ export const dataTableApi = {
   // 表字段管理
   async getTableFields(tableId: number): Promise<ApiResponse<TableField[]>> {
     try {
-      const response = await apiClient.get(`/api/data-tables/${tableId}/fields`)
+      const response = await apiClient.get(`/data-tables/${tableId}/fields`)
       return {
         success: true,
         data: response.data
@@ -96,7 +96,7 @@ export const dataTableApi = {
 
   async getAllTableFields(): Promise<ApiResponse<TableField[]>> {
     try {
-      const response = await apiClient.get('/api/table-fields')
+      const response = await apiClient.get('/table-fields')
       return {
         success: true,
         data: response.data
@@ -111,7 +111,7 @@ export const dataTableApi = {
 
   async createTableField(field: Omit<TableField, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<TableField>> {
     try {
-      const response = await apiClient.post('/api/table-fields', field)
+      const response = await apiClient.post('/table-fields', field)
       return {
         success: true,
         data: response.data
@@ -126,7 +126,7 @@ export const dataTableApi = {
 
   async updateTableField(id: number, field: Partial<TableField>): Promise<ApiResponse<TableField>> {
     try {
-      const response = await apiClient.put(`/api/table-fields/${id}`, field)
+      const response = await apiClient.put(`/table-fields/${id}`, field)
       return {
         success: true,
         data: response.data
@@ -141,7 +141,7 @@ export const dataTableApi = {
 
   async deleteTableField(id: number): Promise<ApiResponse<void>> {
     try {
-      await apiClient.delete(`/api/table-fields/${id}`)
+      await apiClient.delete(`/table-fields/${id}`)
       return {
         success: true,
         message: 'Table field deleted successfully'

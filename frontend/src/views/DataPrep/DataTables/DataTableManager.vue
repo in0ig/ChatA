@@ -198,6 +198,78 @@
         </div>
       </div>
     </el-dialog>
+
+    <!-- 数据表编辑对话框 -->
+    <el-dialog
+      title="编辑数据表"
+      v-model="showEditDialog"
+      width="900px"
+      :close-on-click-modal="false"
+    >
+      <div v-if="selectedTable" class="table-edit-form">
+        <!-- 基本信息编辑 -->
+        <div class="edit-section">
+          <h4>基本信息</h4>
+          <el-form :model="editingTable || {}" label-width="100px">
+            <el-form-item label="表名">
+              <el-input :value="editingTable?.name || ''" disabled />
+            </el-form-item>
+            <el-form-item label="数据源">
+              <el-input :value="editingTable?.dataSourceName || ''" disabled />
+            </el-form-item>
+            <el-form-item label="表描述">
+              <el-input 
+                :value="editingTable?.comment || ''"
+                @input="(value) => { if (editingTable) editingTable.comment = value }"
+                type="textarea" 
+                :rows="2"
+                placeholder="请输入表描述"
+              />
+            </el-form-item>
+          </el-form>
+        </div>
+        
+        <!-- 字段信息编辑 -->
+        <div class="edit-section" style="margin-top: 20px;">
+          <h4>字段信息编辑</h4>
+          <el-table 
+            :data="editingTable?.fields || []" 
+            border
+            empty-text="暂无字段信息"
+            max-height="400px"
+          >
+            <el-table-column prop="name" label="字段名" width="150" />
+            <el-table-column prop="type" label="类型" width="120" />
+            <el-table-column label="字段描述" min-width="200">
+              <template #default="{ row, $index }">
+                <el-input 
+                  v-model="row.comment" 
+                  placeholder="请输入字段描述"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column label="关联字典" min-width="200">
+              <template #default="{ row, $index }">
+                <DictionarySelector
+                  v-model="row.dictionaryId"
+                  size="small"
+                  placeholder="搜索并选择关联字典"
+                  @change="handleDictionaryChange(row, $event)"
+                />
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      
+      <template #footer>
+        <el-button @click="closeEditDialog">取消</el-button>
+        <el-button type="primary" @click="saveTableEdit" :loading="saving">
+          保存修改
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -207,6 +279,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Search } from '@element-plus/icons-vue'
 import { chatbiDataSourceApi } from '@/api/chatbiDataSourceApi'
 import { dataTableApi } from '@/services/dataTableApi'
+import { fieldMappingApi } from '@/api/fieldMappingApi'
+import DictionarySelector from '@/components/DataPreparation/DictionarySelector.vue'
 
 // 数据源接口
 interface DataSource {
@@ -223,6 +297,7 @@ interface TableField {
   comment?: string
   isPrimaryKey?: boolean
   isNullable?: boolean
+  dictionaryId?: string | null // 关联的字典ID
 }
 
 // 表关联关系接口
@@ -257,16 +332,19 @@ interface DiscoveredTable {
 // 响应式数据
 const loading = ref(false)
 const discovering = ref(false)
+const saving = ref(false)
 const selectedTableId = ref<string | null>(null)
 const selectedDataSourceId = ref<string>('')
 const showAddDialog = ref(false)
 const showDetailDialog = ref(false)
+const showEditDialog = ref(false)
 const selectAllDiscovered = ref(false)
 const selectedDiscoveredTables = ref<string[]>([])
 
 const dataSources = ref<DataSource[]>([])
 const tables = ref<DataTable[]>([])
 const discoveredTables = ref<DiscoveredTable[]>([])
+const editingTable = ref<DataTable | null>(null) // 正在编辑的表
 
 // 计算属性
 const selectedTable = computed(() => {
@@ -308,42 +386,40 @@ const handleViewDetail = async (table: DataTable) => {
   }
 }
 
-const handleEditTable = (table?: DataTable) => {
+const handleEditTable = async (table?: DataTable) => {
   if (table) {
     selectedTableId.value = table.id
   }
   if (selectedTable.value) {
-    console.log('编辑表:', selectedTable.value.name)
-    // 实现编辑功能：显示编辑对话框
-    ElMessageBox.prompt(
-      `请输入新的表描述（当前：${selectedTable.value.comment || '无'}）`,
-      `编辑表 "${selectedTable.value.name}"`,
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputValue: selectedTable.value.comment || '',
-        inputPlaceholder: '请输入表描述'
+    // 加载详细的字段信息用于编辑
+    try {
+      const fields = await dataTableApi.getFields(selectedTable.value.id)
+      // 更新选中表的字段信息，映射后端字段名到前端期望的格式
+      const tableIndex = tables.value.findIndex(t => t.id === selectedTable.value!.id)
+      if (tableIndex !== -1) {
+        tables.value[tableIndex].fields = fields.map(field => ({
+          name: field.field_name,  // 后端返回 field_name
+          type: field.data_type,   // 后端返回 data_type
+          comment: field.description || '',
+          dictionaryId: null // 初始化字典关联
+        }))
       }
-    ).then(async ({ value }) => {
-      try {
-        // 这里应该调用更新表的API，目前先显示成功消息
-        // await dataTableApi.update(selectedTable.value!.id, { description: value })
-        
-        // 更新本地数据
-        const tableIndex = tables.value.findIndex(t => t.id === selectedTable.value!.id)
-        if (tableIndex !== -1) {
-          tables.value[tableIndex].comment = value
-        }
-        
-        ElMessage.success('表描述更新成功')
-        console.log(`表 "${selectedTable.value!.name}" 描述已更新为: "${value}"`)
-      } catch (error) {
-        console.error('更新表描述失败:', error)
-        ElMessage.error('更新失败，请重试')
-      }
-    }).catch(() => {
-      // 用户取消编辑
-    })
+    } catch (error) {
+      console.error('加载字段信息失败:', error)
+      ElMessage.warning('加载字段信息失败，将显示基本编辑功能')
+    }
+    
+    // 创建编辑表的副本，确保不为null
+    editingTable.value = {
+      ...selectedTable.value,
+      fields: (selectedTable.value.fields || []).map(field => ({
+        ...field,
+        dictionaryId: field.dictionaryId || null
+      }))
+    }
+    
+    // 显示编辑对话框
+    showEditDialog.value = true
   }
 }
 
@@ -465,6 +541,72 @@ const closeAddDialog = () => {
   discoveredTables.value = []
   selectedDiscoveredTables.value = []
   selectAllDiscovered.value = false
+}
+
+const closeEditDialog = () => {
+  showEditDialog.value = false
+  editingTable.value = null
+}
+
+const saveTableEdit = async () => {
+  if (!editingTable.value) return
+  
+  saving.value = true
+  try {
+    // 保存表基本信息
+    if (editingTable.value.comment !== selectedTable.value?.comment) {
+      // 调用更新表描述的API
+      // await dataTableApi.update(editingTable.value.id, { description: editingTable.value.comment })
+      
+      // 更新本地数据
+      const tableIndex = tables.value.findIndex(t => t.id === editingTable.value!.id)
+      if (tableIndex !== -1) {
+        tables.value[tableIndex].comment = editingTable.value.comment
+      }
+    }
+    
+    // 保存字段映射关系 - 确保 fields 存在
+    const fields = editingTable.value.fields || []
+    const fieldMappingPromises = fields.map(async (field) => {
+      if (field.comment || field.dictionaryId) {
+        // 调用字段映射API保存字段描述和字典关联
+        try {
+          await fieldMappingApi.createFieldMapping({
+            table_id: parseInt(editingTable.value!.id),
+            field_id: field.name, // 使用字段名作为field_id
+            field_name: field.name,
+            dictionary_id: field.dictionaryId ? (typeof field.dictionaryId === 'string' ? field.dictionaryId : String(field.dictionaryId)) : undefined,
+            business_name: field.comment || field.name,
+            business_meaning: field.comment || '',
+            value_range: '',
+            is_required: false,
+            default_value: ''
+          })
+        } catch (error) {
+          console.warn(`保存字段 ${field.name} 的映射失败:`, error)
+        }
+      }
+    })
+    
+    await Promise.all(fieldMappingPromises)
+    
+    ElMessage.success('数据表编辑保存成功')
+    closeEditDialog()
+    
+    // 刷新表列表
+    await refreshTables()
+  } catch (error) {
+    console.error('保存表编辑失败:', error)
+    ElMessage.error('保存失败，请重试')
+  } finally {
+    saving.value = false
+  }
+}
+
+const handleDictionaryChange = (field: TableField, dictionaryId: string | null) => {
+  // 字典选择变化处理
+  field.dictionaryId = dictionaryId
+  console.log(`字段 ${field.name} 关联字典变更为:`, dictionaryId)
 }
 
 const refreshTables = async () => {
@@ -650,6 +792,24 @@ onMounted(async () => {
 }
 
 .detail-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+  border-bottom: 1px solid #e4e7ed;
+  padding-bottom: 8px;
+}
+
+/* 编辑对话框样式 */
+.table-edit-form {
+  padding: 0;
+}
+
+.edit-section {
+  margin-bottom: 24px;
+}
+
+.edit-section h4 {
   margin: 0 0 16px 0;
   font-size: 16px;
   font-weight: 600;

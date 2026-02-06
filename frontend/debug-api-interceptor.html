@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 拦截器调试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; background: #f0f8f0; padding: 10px; border-radius: 3px; }
+        .error { color: red; background: #fff0f0; padding: 10px; border-radius: 3px; }
+        .info { color: blue; background: #f0f0ff; padding: 10px; border-radius: 3px; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>API 拦截器调试</h1>
+    
+    <div class="test-section">
+        <h3>问题分析</h3>
+        <div class="info">
+            <p><strong>现象：</strong> 前端仍然报"数据源名称不能为空"错误</p>
+            <p><strong>可能原因：</strong> frontend/src/services/api.ts 中的请求拦截器验证逻辑</p>
+            <p><strong>验证方法：</strong> 直接测试拦截器逻辑</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>拦截器逻辑测试</h3>
+        <button onclick="testInterceptorLogic()">测试拦截器逻辑</button>
+        <button onclick="testRequestData()">测试请求数据结构</button>
+        <button onclick="testDirectAPI()">直接测试 API</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试结果</h3>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function testInterceptorLogic() {
+            const resultDiv = document.getElementById('result');
+            
+            // 模拟拦截器逻辑
+            const config = {
+                method: 'POST',
+                url: '/api/datasources/test',
+                data: {
+                    name: 'demo_datasource',
+                    source_type: 'DATABASE',
+                    db_type: 'MySQL',
+                    host: '127.0.0.1',
+                    port: 3306,
+                    database_name: 'mock_data',
+                    auth_type: 'SQL_AUTH',
+                    username: 'root',
+                    password: 'password',
+                    created_by: 'system'
+                }
+            };
+
+            try {
+                // 模拟拦截器验证逻辑
+                if (config.method?.toUpperCase() === 'POST' || config.method?.toUpperCase() === 'PUT') {
+                    if (config.data && typeof config.data === 'object') {
+                        // 验证必填字段
+                        if (config.url?.includes('/datasources') && config.data.name === undefined) {
+                            throw new Error('数据源名称不能为空');
+                        }
+                    }
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h4>✅ 拦截器逻辑测试通过</h4>
+                        <p><strong>URL:</strong> ${config.url}</p>
+                        <p><strong>Method:</strong> ${config.method}</p>
+                        <p><strong>Name 字段:</strong> ${config.data.name}</p>
+                        <p><strong>Name 是否为 undefined:</strong> ${config.data.name === undefined}</p>
+                        <p><strong>URL 包含 /datasources:</strong> ${config.url?.includes('/datasources')}</p>
+                        <p><strong>验证结果:</strong> 通过，不会抛出错误</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 拦截器逻辑测试失败</h4>
+                        <p><strong>错误:</strong> ${error.message}</p>
+                        <p><strong>URL:</strong> ${config.url}</p>
+                        <p><strong>Method:</strong> ${config.method}</p>
+                        <p><strong>Name 字段:</strong> ${config.data.name}</p>
+                        <p><strong>Name 是否为 undefined:</strong> ${config.data.name === undefined}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function testRequestData() {
+            const resultDiv = document.getElementById('result');
+            
+            const requestData = {
+                name: 'demo_datasource',
+                source_type: 'DATABASE',
+                db_type: 'MySQL',
+                host: '127.0.0.1',
+                port: 3306,
+                database_name: 'mock_data',
+                auth_type: 'SQL_AUTH',
+                username: 'root',
+                password: 'password',
+                created_by: 'system'
+            };
+
+            resultDiv.innerHTML = `
+                <div class="info">
+                    <h4>📋 请求数据结构分析</h4>
+                    <p><strong>数据类型:</strong> ${typeof requestData}</p>
+                    <p><strong>是否为对象:</strong> ${typeof requestData === 'object'}</p>
+                    <p><strong>包含 name 字段:</strong> ${'name' in requestData}</p>
+                    <p><strong>name 字段值:</strong> ${requestData.name}</p>
+                    <p><strong>name 是否为 undefined:</strong> ${requestData.name === undefined}</p>
+                    <p><strong>name 是否为空字符串:</strong> ${requestData.name === ''}</p>
+                    <p><strong>name 是否为 null:</strong> ${requestData.name === null}</p>
+                    <p><strong>完整数据:</strong></p>
+                    <pre>${JSON.stringify(requestData, null, 2)}</pre>
+                </div>
+            `;
+        }
+
+        async function testDirectAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>正在测试直接 API 调用...</p>';
+
+            try {
+                const requestData = {
+                    name: 'demo_datasource',
+                    source_type: 'DATABASE',
+                    db_type: 'MySQL',
+                    host: '127.0.0.1',
+                    port: 3306,
+                    database_name: 'mock_data',
+                    auth_type: 'SQL_AUTH',
+                    username: 'root',
+                    password: 'password',
+                    created_by: 'system'
+                };
+
+                console.log('发送请求数据:', requestData);
+
+                const response = await fetch('http://localhost:8000/api/datasources/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = await response.json();
+                console.log('响应数据:', data);
+
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>✅ 直接 API 调用成功</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <p><strong>说明:</strong> 绕过前端拦截器的直接调用成功，说明后端 API 正常</p>
+                            <p><strong>响应数据:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ 直接 API 调用失败</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('请求错误:', error);
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 直接 API 调用网络错误</h4>
+                        <p><strong>错误:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

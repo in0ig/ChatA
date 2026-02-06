@@ -5,7 +5,7 @@ export const fieldMappingApi = {
   // 字段映射管理
   async getFieldMappings(): Promise<ApiResponse<FieldMapping[]>> {
     try {
-      const response = await apiClient.get('/api/field-mappings')
+      const response = await apiClient.get('/field-mappings')
       return {
         success: true,
         data: response.data
@@ -20,7 +20,7 @@ export const fieldMappingApi = {
 
   async getFieldMappingsByTable(tableId: number): Promise<ApiResponse<FieldMapping[]>> {
     try {
-      const response = await apiClient.get(`/api/tables/${tableId}/field-mappings`)
+      const response = await apiClient.get(`/tables/${tableId}/field-mappings`)
       return {
         success: true,
         data: response.data
@@ -35,7 +35,7 @@ export const fieldMappingApi = {
 
   async createFieldMapping(mapping: Omit<FieldMapping, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<FieldMapping>> {
     try {
-      const response = await apiClient.post('/api/field-mappings', mapping)
+      const response = await apiClient.post('/field-mappings', mapping)
       return {
         success: true,
         data: response.data
@@ -50,7 +50,7 @@ export const fieldMappingApi = {
 
   async updateFieldMapping(id: number, mapping: Partial<FieldMapping>): Promise<ApiResponse<FieldMapping>> {
     try {
-      const response = await apiClient.put(`/api/field-mappings/${id}`, mapping)
+      const response = await apiClient.put(`/field-mappings/${id}`, mapping)
       return {
         success: true,
         data: response.data
@@ -65,7 +65,7 @@ export const fieldMappingApi = {
 
   async deleteFieldMapping(id: number): Promise<ApiResponse<void>> {
     try {
-      await apiClient.delete(`/api/field-mappings/${id}`)
+      await apiClient.delete(`/field-mappings/${id}`)
       return {
         success: true,
         message: 'Field mapping deleted successfully'
@@ -81,7 +81,7 @@ export const fieldMappingApi = {
   // 批量操作
   async batchCreateFieldMappings(mappings: Omit<FieldMapping, 'id' | 'created_at' | 'updated_at'>[]): Promise<ApiResponse<FieldMapping[]>> {
     try {
-      const response = await apiClient.post('/api/field-mappings/batch', { mappings })
+      const response = await apiClient.post('/field-mappings/batch', { mappings })
       return {
         success: true,
         data: response.data
@@ -96,7 +96,7 @@ export const fieldMappingApi = {
 
   async batchUpdateFieldMappings(updates: { id: number; data: Partial<FieldMapping> }[]): Promise<ApiResponse<FieldMapping[]>> {
     try {
-      const response = await apiClient.put('/api/field-mappings/batch', { updates })
+      const response = await apiClient.put('/field-mappings/batch', { updates })
       return {
         success: true,
         data: response.data
@@ -111,7 +111,7 @@ export const fieldMappingApi = {
 
   async batchDeleteFieldMappings(ids: number[]): Promise<ApiResponse<void>> {
     try {
-      await apiClient.delete('/api/field-mappings/batch', { data: { ids } })
+      await apiClient.delete('/field-mappings/batch', { data: { ids } })
       return {
         success: true,
         message: 'Field mappings deleted successfully'
@@ -131,7 +131,7 @@ export const fieldMappingApi = {
       formData.append('file', file)
       formData.append('table_id', tableId.toString())
       
-      const response = await apiClient.post('/api/field-mappings/import', formData, {
+      const response = await apiClient.post('/field-mappings/import', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -150,7 +150,7 @@ export const fieldMappingApi = {
   },
 
   async exportFieldMappings(tableId: number): Promise<Blob> {
-    const response = await apiClient.get(`/api/tables/${tableId}/field-mappings/export`, {
+    const response = await apiClient.get(`/tables/${tableId}/field-mappings/export`, {
       responseType: 'blob'
     })
     return response.data

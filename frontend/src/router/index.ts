@@ -86,6 +86,20 @@ const routes = [
       keepAlive: true
     } as RouteMeta
   },
+  // ChatBI 对话界面路由 (暂时注释，文件不存在)
+  /*
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: () => import('@/views/Chat/ChatView.vue'),
+    meta: {
+      title: 'ChatBI 对话',
+      requiresAuth: true,
+      keepAlive: true,
+      icon: 'chat-dot-round'
+    } as RouteMeta
+  },
+  */
   // ChatBI 数据源管理路由
   {
     path: '/chatbi/datasources',

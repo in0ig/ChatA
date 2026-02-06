@@ -647,6 +647,11 @@ const getEmptyStateSubtitle = () => {
 
 // 获取数据源类型标签
 const getDataSourceTypeLabel = (type: string) => {
+  // 处理 undefined 或空值的情况
+  if (!type) {
+    return '未知'
+  }
+  
   const typeMap: Record<string, string> = {
     'mysql': 'MySQL',
     'excel': 'Excel',
@@ -660,6 +665,11 @@ const getDataSourceTypeLabel = (type: string) => {
 
 // 获取数据源类型颜色
 const getDataSourceTypeColor = (type: string) => {
+  // 处理 undefined 或空值的情况
+  if (!type) {
+    return 'info'
+  }
+  
   const colorMap: Record<string, string> = {
     'mysql': 'primary',
     'excel': 'success',

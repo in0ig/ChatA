@@ -54,64 +54,64 @@ export interface UpdateDictionaryItemRequest extends Partial<CreateDictionaryIte
 export const dictionaryApi = {
   // 获取所有字典
   getAll(params?: { page?: number; page_size?: number; search?: string; status?: boolean; parent_id?: string }): Promise<Dictionary[]> {
-    return api.get('/api/dictionaries', { params }).then(response => response.data)
+    return api.get('/dictionaries', { params }).then(response => response.data)
   },
   
   // 获取字典树形结构
   getTree(status?: boolean): Promise<Dictionary[]> {
-    return api.get('/api/dictionaries/tree', { 
+    return api.get('/dictionaries/tree', { 
       params: status !== undefined ? { status } : {} 
     }).then(response => response.data)
   },
   
   // 根据ID获取单个字典
   getById(id: string): Promise<Dictionary> {
-    return api.get(`/api/dictionaries/${id}`).then(response => response.data)
+    return api.get(`/dictionaries/${id}`).then(response => response.data)
   },
   
   // 创建新字典
   create(dictionary: CreateDictionaryRequest): Promise<Dictionary> {
-    return api.post('/api/dictionaries', dictionary).then(response => response.data)
+    return api.post('/dictionaries', dictionary).then(response => response.data)
   },
   
   // 更新现有字典
   update(id: string, updates: UpdateDictionaryRequest): Promise<Dictionary> {
-    return api.put(`/api/dictionaries/${id}`, updates).then(response => response.data)
+    return api.put(`/dictionaries/${id}`, updates).then(response => response.data)
   },
   
   // 删除字典
   delete(id: string): Promise<void> {
-    return api.delete(`/api/dictionaries/${id}`).then(response => response.data)
+    return api.delete(`/dictionaries/${id}`).then(response => response.data)
   },
 
   // 获取字典项列表
   getItems(dictionaryId: string, params?: { page?: number; page_size?: number; search?: string; status?: boolean }): Promise<DictionaryItem[]> {
-    return api.get(`/api/dictionaries/${dictionaryId}/items`, { params }).then(response => response.data)
+    return api.get(`/dictionaries/${dictionaryId}/items`, { params }).then(response => response.data)
   },
 
   // 创建字典项
   createItem(dictionaryId: string, item: CreateDictionaryItemRequest): Promise<DictionaryItem> {
-    return api.post(`/api/dictionaries/${dictionaryId}/items`, item).then(response => response.data)
+    return api.post(`/dictionaries/${dictionaryId}/items`, item).then(response => response.data)
   },
 
   // 更新字典项
   updateItem(dictionaryId: string, itemId: string, updates: UpdateDictionaryItemRequest): Promise<DictionaryItem> {
-    return api.put(`/api/dictionaries/${dictionaryId}/items/${itemId}`, updates).then(response => response.data)
+    return api.put(`/dictionaries/${dictionaryId}/items/${itemId}`, updates).then(response => response.data)
   },
 
   // 删除字典项
   deleteItem(dictionaryId: string, itemId: string): Promise<void> {
-    return api.delete(`/api/dictionaries/${dictionaryId}/items/${itemId}`).then(response => response.data)
+    return api.delete(`/dictionaries/${dictionaryId}/items/${itemId}`).then(response => response.data)
   },
 
   // 批量创建字典项
   batchCreateItems(dictionaryId: string, items: CreateDictionaryItemRequest[]): Promise<{ success_count: number; failed_count: number; failed_items: any[] }> {
-    return api.post(`/api/dictionaries/${dictionaryId}/items/batch`, { items }).then(response => response.data)
+    return api.post(`/dictionaries/${dictionaryId}/items/batch`, { items }).then(response => response.data)
   },
   
   // 导出字典
   export(id: string, format: 'excel' | 'csv'): Promise<{ download_url: string; file_name: string }> {
-    return api.get(`/api/dictionaries/${id}/export`, {
+    return api.get(`/dictionaries/${id}/export`, {
       params: { format_type: format }
     }).then(response => response.data)
   },
@@ -120,7 +120,7 @@ export const dictionaryApi = {
   import(id: string, file: File): Promise<{ success_count: number; failed_count: number; failed_items: any[] }> {
     const formData = new FormData()
     formData.append('file', file)
-    return api.post(`/api/dictionaries/${id}/import`, formData, {
+    return api.post(`/dictionaries/${id}/import`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

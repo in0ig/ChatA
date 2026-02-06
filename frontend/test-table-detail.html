@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DataTableDetail Test</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    // Mock axios
+    import axios from 'axios';
+    const originalCreate = axios.create;
+    axios.create = () => ({
+      get: async (url) => {
+        if (url.includes('/data-tables/1')) {
+          return {
+            data: {
+              id: 1,
+              table_name: 'users',
+              source_id: 1,
+              sourceName: 'MySQL 数据源',
+              fieldCount: 2,
+              row_count: 100,
+              lastSynced: '2026-01-28T10:00:00Z',
+              isActive: true,
+              description: '用户信息表',
+              created_at: '2026-01-28T10:00:00Z',
+              columns: [
+                {
+                  id: 1,
+                  name: 'id',
+                  type: 'INT',
+                  description: '主键',
+                  is_primary_key: true,
+                  is_nullable: false
+                },
+                {
+                  id: 2,
+                  name: 'name',
+                  type: 'VARCHAR',
+                  description: '用户姓名',
+                  is_primary_key: false,
+                  is_nullable: true
+                }
+              ]
+            }
+          };
+        }
+        throw new Error('Resource not found');
+      },
+      post: () => Promise.resolve({ data: {} }),
+      put: () => Promise.resolve({ data: {} }),
+      delete: () => Promise.resolve({ data: {} }),
+      interceptors: {
+        request: { use: () => {}, eject: () => {} },
+        response: { use: () => {}, eject: () => {} }
+      }
+    });
+
+    // Initialize Pinia and Vue
+    import { createApp } from 'vue'
+    import { createPinia } from 'pinia'
+    import DataTableDetail from '/src/components/DataPreparation/DataTableDetail.vue'
+    
+    const pinia = createPinia()
+    const app = createApp(DataTableDetail, { tableId: '1' })
+    app.use(pinia)
+    app.mount('#app')
+  </script>
+</body>
+</html>

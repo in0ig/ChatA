@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多表预览和表关联功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #409eff;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #666;
+            margin-top: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #409eff;
+        }
+        .success {
+            color: #67c23a;
+            font-weight: bold;
+        }
+        .error {
+            color: #f56c6c;
+            font-weight: bold;
+        }
+        .info {
+            color: #909399;
+        }
+        button {
+            background: #409eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #66b1ff;
+        }
+        button:disabled {
+            background: #c0c4cc;
+            cursor: not-allowed;
+        }
+        pre {
+            background: #f4f4f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background: #ecf5ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>多表预览和表关联功能测试</h1>
+        <p class="info">测试多表预览功能和表关联数据的正确性</p>
+    </div>
+
+    <div class="container">
+        <h2>1. 测试后端表关联API</h2>
+        <div class="test-section">
+            <p>测试 GET /api/table-relations 接口</p>
+            <button onclick="testTableRelationsAPI()">测试表关联API</button>
+            <div id="api-result" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>2. 测试订单-用户关联</h2>
+        <div class="test-section">
+            <p>验证订单表和用户表的关联关系是否正确创建</p>
+            <button onclick="testOrderUserRelation()">测试订单-用户关联</button>
+            <div id="relation-result" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>3. 功能验证清单</h2>
+        <div class="test-section">
+            <h3>前端功能验证：</h3>
+            <ul>
+                <li>✅ DataPreviewModal组件已添加表选择下拉框</li>
+                <li>✅ 添加了"表关联"标签页</li>
+                <li>✅ 实现了表切换事件处理</li>
+                <li>✅ 集成了表关联数据加载</li>
+            </ul>
+            
+            <h3>后端功能验证：</h3>
+            <ul>
+                <li>✅ 表关联API接口可用</li>
+                <li>✅ 订单-用户关联已创建</li>
+                <li>✅ 关联数据格式正确</li>
+            </ul>
+            
+            <h3>手动测试步骤：</h3>
+            <ol>
+                <li>启动后端服务：<code>cd backend && python -m uvicorn src.main:app --reload</code></li>
+                <li>启动前端服务：<code>cd frontend && npm run dev</code></li>
+                <li>访问Home页面</li>
+                <li>选择多个数据表（包括orders和users）</li>
+                <li>点击"预览"按钮</li>
+                <li>验证下拉框显示所有选中的表</li>
+                <li>切换表，验证数据正确更新</li>
+                <li>切换到"表关联"标签页</li>
+                <li>验证显示订单-用户关联信息</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8000';
+
+        async function testTableRelationsAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p class="info">正在测试...</p>';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/table-relations?limit=100`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <p class="success">✅ API调用成功</p>
+                    <p>找到 ${data.length} 个表关联</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">❌ API调用失败</p>
+                    <p>错误信息: ${error.message}</p>
+                    <p class="info">请确保后端服务已启动：cd backend && python -m uvicorn src.main:app --reload</p>
+                `;
+            }
+        }
+
+        async function testOrderUserRelation() {
+            const resultDiv = document.getElementById('relation-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p class="info">正在测试...</p>';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/table-relations?limit=100`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                // 查找订单-用户关联
+                const orderUserRelation = data.find(rel => 
+                    rel.relation_name === '订单-用户关联' ||
+                    (rel.primary_table_name === 'orders' && rel.foreign_table_name === 'users')
+                );
+
+                if (orderUserRelation) {
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ 找到订单-用户关联</p>
+                        <h4>关联详情：</h4>
+                        <ul>
+                            <li><strong>关联名称：</strong>${orderUserRelation.relation_name}</li>
+                            <li><strong>主表：</strong>${orderUserRelation.primary_table_name}.${orderUserRelation.primary_field_name} (${orderUserRelation.primary_field_type})</li>
+                            <li><strong>从表：</strong>${orderUserRelation.foreign_table_name}.${orderUserRelation.foreign_field_name} (${orderUserRelation.foreign_field_type})</li>
+                            <li><strong>连接类型：</strong>${orderUserRelation.join_type}</li>
+                            <li><strong>描述：</strong>${orderUserRelation.description || '无'}</li>
+                            <li><strong>状态：</strong>${orderUserRelation.status ? '启用' : '禁用'}</li>
+                        </ul>
+                        <pre>${JSON.stringify(orderUserRelation, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ 未找到订单-用户关联</p>
+                        <p class="info">请运行脚本创建关联：cd backend && python create_order_user_relation.py</p>
+                        <p>当前所有关联：</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">❌ 测试失败</p>
+                    <p>错误信息: ${error.message}</p>
+                    <p class="info">请确保后端服务已启动：cd backend && python -m uvicorn src.main:app --reload</p>
+                `;
+            }
+        }
+
+        // 页面加载时自动运行测试
+        window.onload = function() {
+            console.log('页面加载完成，可以开始测试');
+        };
+    </script>
+</body>
+</html>

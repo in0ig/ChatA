@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试 HeaderBar 渲染</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #1890ff;
+            border-radius: 8px;
+        }
+        .test-section h2 {
+            color: #1890ff;
+            margin-top: 0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .instruction {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 HeaderBar 渲染检查指南</h1>
+    
+    <div class="instruction">
+        <strong>📋 操作步骤：</strong>
+        <ol>
+            <li>确保前端服务正在运行（http://localhost:5181）</li>
+            <li>在浏览器中打开 http://localhost:5181</li>
+            <li>按 F12 打开开发者工具</li>
+            <li>在 Console 标签中依次运行下面的检查命令</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>1️⃣ 检查 HeaderBar 元素是否存在</h2>
+        <pre>document.querySelector('.header-bar')</pre>
+        <p><strong>预期结果：</strong>应该返回一个 div 元素，而不是 null</p>
+    </div>
+
+    <div class="test-section">
+        <h2>2️⃣ 检查配置按钮是否存在</h2>
+        <pre>document.querySelector('.config-button')</pre>
+        <p><strong>预期结果：</strong>应该返回一个 button 元素</p>
+    </div>
+
+    <div class="test-section">
+        <h2>3️⃣ 检查 Setting 图标是否存在</h2>
+        <pre>document.querySelector('.el-icon')</pre>
+        <p><strong>预期结果：</strong>应该返回一个图标元素</p>
+    </div>
+
+    <div class="test-section">
+        <h2>4️⃣ 检查完整的 App 结构</h2>
+        <pre>console.log(document.querySelector('#app').innerHTML.substring(0, 1000))</pre>
+        <p><strong>预期结果：</strong>应该看到包含 header-bar 类的 HTML 结构</p>
+    </div>
+
+    <div class="test-section">
+        <h2>5️⃣ 检查 HeaderBar 的样式</h2>
+        <pre>
+const headerBar = document.querySelector('.header-bar');
+if (headerBar) {
+    const styles = window.getComputedStyle(headerBar);
+    console.log('Display:', styles.display);
+    console.log('Visibility:', styles.visibility);
+    console.log('Height:', styles.height);
+    console.log('Position:', styles.position);
+} else {
+    console.log('❌ HeaderBar 元素不存在！');
+}
+        </pre>
+        <p><strong>预期结果：</strong>display 应该是 'flex'，visibility 应该是 'visible'</p>
+    </div>
+
+    <div class="test-section">
+        <h2>6️⃣ 检查配置按钮的点击事件</h2>
+        <pre>
+const configBtn = document.querySelector('.config-button');
+if (configBtn) {
+    console.log('✅ 配置按钮存在');
+    console.log('按钮文本:', configBtn.textContent);
+    console.log('按钮类名:', configBtn.className);
+    // 尝试点击
+    configBtn.click();
+    console.log('已触发点击事件，检查右侧是否出现配置抽屉');
+} else {
+    console.log('❌ 配置按钮不存在！');
+}
+        </pre>
+        <p><strong>预期结果：</strong>点击后应该打开右侧的配置抽屉</p>
+    </div>
+
+    <div class="test-section">
+        <h2>7️⃣ 检查所有 HeaderBar 相关元素</h2>
+        <pre>
+console.log('=== HeaderBar 完整检查 ===');
+console.log('HeaderBar:', document.querySelector('.header-bar'));
+console.log('Left section:', document.querySelector('.left-section'));
+console.log('Right section:', document.querySelector('.right-section'));
+console.log('Logo:', document.querySelector('.logo'));
+console.log('Config button:', document.querySelector('.config-button'));
+console.log('All el-icons:', document.querySelectorAll('.el-icon'));
+        </pre>
+    </div>
+
+    <div class="instruction" style="background: #d4edda; border-color: #28a745;">
+        <strong>✅ 如果所有检查都通过：</strong>
+        <p>HeaderBar 已正确渲染，配置按钮应该可见。如果仍然看不到，可能是 CSS 样式问题。</p>
+    </div>
+
+    <div class="instruction" style="background: #f8d7da; border-color: #dc3545;">
+        <strong>❌ 如果检查失败：</strong>
+        <p>请将控制台输出截图发送给我，我会进一步诊断问题。</p>
+    </div>
+</body>
+</html>

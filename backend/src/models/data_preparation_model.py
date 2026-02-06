@@ -587,8 +587,6 @@ class FieldMapping(Base):
     value_range = Column(String(255), nullable=True, comment='取值范围')
     is_required = Column(Boolean(), default=False, comment='是否必填')
     default_value = Column(String(255), nullable=True, comment='默认值')
-    validation_rules = Column(JSON(), nullable=True, comment='验证规则（JSON格式）')
-    created_by = Column(String(100), nullable=False, comment='创建人')
     created_at = Column(DateTime(), default=datetime.now, comment='创建时间')
     updated_at = Column(DateTime(), default=datetime.now, onupdate=datetime.now, comment='更新时间')
 
@@ -620,8 +618,6 @@ class FieldMapping(Base):
             'value_range': self.value_range,
             'is_required': self.is_required,
             'default_value': self.default_value,
-            'validation_rules': self.validation_rules,
-            'created_by': self.created_by,
             'created_at': safe_isoformat(self.created_at),
             'updated_at': safe_isoformat(self.updated_at)
         }

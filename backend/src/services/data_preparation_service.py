@@ -15,14 +15,16 @@ from src.schemas.data_preparation_schema import (
     DictionaryItemUpdate,
     DictionaryItemResponse
 )
+
+# 创建日志记录器
+logger = logging.getLogger(__name__)
+
 # 尝试导入缓存服务，如果失败则使用空缓存
 try:
     from src.services.dictionary_cache import dictionary_cache
 except ImportError as e:
     logger.warning(f"Failed to import dictionary cache: {e}")
     dictionary_cache = None
-
-# 创建日志记录器
 logger = logging.getLogger(__name__)
 
 class DictionaryService:
@@ -436,11 +438,9 @@ class DictionaryService:
         if not dictionary:
             raise ValueError(f"字典不存在: {dictionary_id}")
         
-        # 尝试从缓存获取
-        cached_data = self._get_cached_dictionary_items(dictionary_id, page, page_size, search, status)
-        if cached_data:
-            logger.info("Returning dictionary items from cache")
-            return cached_data
+        # 🔧 CACHE FIX: Skip cache for now to ensure fresh data
+        # This fixes the issue where cached empty results prevent new dictionary items from being displayed
+        logger.info(f"🔧 CACHE FIX: Bypassing cache to get fresh dictionary items for {dictionary_id}")
         
         # 构建查询
         query = db.query(DictionaryItem).filter(DictionaryItem.dictionary_id == dictionary_id)
@@ -461,6 +461,7 @@ class DictionaryService:
         
         # 计算总数
         total = query.count()
+        logger.info(f"🔧 CACHE FIX: Found {total} dictionary items in database for {dictionary_id}")
         
         # 应用分页
         offset = (page - 1) * page_size
@@ -468,14 +469,15 @@ class DictionaryService:
         
         # 转换为响应模型
         item_list = [item.to_dict() for item in items]
+        logger.info(f"🔧 CACHE FIX: Returning {len(item_list)} dictionary items for {dictionary_id}")
         
         result = {
             "items": item_list,
             "total": total
         }
         
-        # 缓存结果
-        self._set_cached_dictionary_items(dictionary_id, result)
+        # 🔧 CACHE FIX: Don't cache the result to ensure fresh data
+        # self._set_cached_dictionary_items(dictionary_id, result)
         
         return result
     
@@ -549,7 +551,8 @@ class DictionaryService:
             description=item_data.description,
             sort_order=item_data.sort_order,
             status=item_data.status,
-            extra_data=item_data.extra_data
+            extra_data=item_data.extra_data,
+            created_by=getattr(item_data, 'created_by', 'system')  # 默认使用 'system' 如果没有提供
         )
         
         db.add(db_item)
@@ -558,8 +561,9 @@ class DictionaryService:
         
         logger.info(f"Dictionary item created successfully: {item_data.item_key} (ID: {db_item.id})")
         
-        # 清除相关缓存
-        self._clear_dictionary_cache(dictionary_id)
+        # 🔧 CACHE FIX: Clear all dictionary cache to ensure fresh data
+        logger.info(f"🔧 CACHE FIX: Clearing all dictionary cache after creating item for {dictionary_id}")
+        self._clear_dictionary_cache()  # Clear all cache, not just specific dictionary
         
         return db_item
     
@@ -624,17 +628,21 @@ class DictionaryService:
         # 获取字典项
         db_item = db.query(DictionaryItem).filter(DictionaryItem.id == item_id).first()
         if not db_item:
+            logger.warning(f"Dictionary item {item_id} not found for deletion")
             return False
+        
+        # 记录字典ID用于清除缓存
+        dictionary_id = db_item.dictionary_id
         
         # 删除字典项
         db.delete(db_item)
         db.commit()
         
-        logger.info(f"Dictionary item {item_id} deleted successfully")
+        logger.info(f"Dictionary item {item_id} deleted successfully from dictionary {dictionary_id}")
         
-        # 清除相关缓存
-        dictionary_id = db_item.dictionary_id
-        self._clear_dictionary_cache(dictionary_id)
+        # 🔧 CACHE FIX: Clear all dictionary cache after deletion
+        logger.info(f"🔧 CACHE FIX: Clearing all dictionary cache after deleting item {item_id}")
+        self._clear_dictionary_cache()  # Clear all cache, not just specific dictionary
         
         return True
     

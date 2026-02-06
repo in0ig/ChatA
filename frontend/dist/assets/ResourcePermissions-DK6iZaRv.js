@@ -1,1 +1,0 @@
-import{e as a,f as t,c as n,a as s,t as r,o as c,_ as l}from"./index-UzuFSHw5.js";const p={class:"placeholder-page"},_=a({__name:"ResourcePermissions",setup(i){const o=t("此功能正在开发中...");return(d,e)=>(c(),n("div",p,[e[0]||(e[0]=s("h1",null,"资源权限管理",-1)),s("p",null,r(o.value),1)]))}}),u=l(_,[["__scopeId","data-v-50d745e4"]]);export{u as default};

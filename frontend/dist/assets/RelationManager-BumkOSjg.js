@@ -1,1 +1,0 @@
-import{e as o,c as n,a as e,o as s,_ as t}from"./index-UzuFSHw5.js";const r={class:"relation-manager"},l=o({__name:"RelationManager",setup(c){return(_,a)=>(s(),n("div",r,[...a[0]||(a[0]=[e("div",{class:"placeholder"},[e("h3",null,"表关联管理主页"),e("p",null,"此组件将在任务 5.1 中实现，支持列表视图和图形视图切换")],-1)])]))}}),d=t(l,[["__scopeId","data-v-93732b16"]]);export{d as default};

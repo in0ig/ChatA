@@ -69,13 +69,19 @@ export const dictionaryApi = {
   // 字典项管理
   async getDictionaryItems(dictionaryId: string): Promise<ApiResponse<DictionaryItem[]>> {
     try {
-      const response = await apiClient.get(`/dictionaries/${dictionaryId}/items`)
+      console.log('📡 API - getDictionaryItems: calling for dictionaryId:', dictionaryId)
+      const url = `/dictionaries/${dictionaryId}/items`
+      console.log('📡 API - getDictionaryItems: full URL:', url)
+      const response = await apiClient.get(url)
+      console.log('📡 API - getDictionaryItems: raw response:', response)
       const data = response?.data || response || []
+      console.log('📡 API - getDictionaryItems: processed data:', data)
       return {
         success: true,
         data: Array.isArray(data) ? data : []
       }
     } catch (error: any) {
+      console.error('❌ API - getDictionaryItems: error:', error)
       return {
         success: false,
         error: error.message || 'Failed to fetch dictionary items'

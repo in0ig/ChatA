@@ -178,7 +178,7 @@
           accept=".csv,.xlsx,.xls,.txt,.json" 
         />
         
-        <!-- 第一行：数据源选择器、预览按钮、模式切换开关 -->
+        <!-- 第一行：数据源选择器、模式切换开关 -->
         <div class="input-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
           <div class="data-source-selector" style="display: flex; align-items: center;">
             <label class="label">数据源：</label>
@@ -186,8 +186,6 @@
               v-model="currentDataSource" 
               placeholder="请选择数据源" 
               class="source-select"
-              multiple
-              collapse-tags
               @change="handleDataSourceChange"
             >
               <el-option 
@@ -198,15 +196,6 @@
               />
             </el-select>
           </div>
-          
-          <el-button 
-            type="primary" 
-            size="small" 
-            class="preview-btn"
-            @click="openDataSourceSelector"
-          >
-            预览
-          </el-button>
           
           <div class="mode-toggle" style="display: flex; align-items: center; margin-left: auto;">
             <label class="label" style="margin-right: 8px;">智能问数</label>
@@ -221,6 +210,40 @@
             />
             <label class="label" style="margin-left: 8px;">生成报告</label>
           </div>
+        </div>
+        
+        <!-- 第二行：数据表选择器、预览按钮 -->
+        <div class="input-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div class="data-table-selector" style="display: flex; align-items: center; flex: 1;">
+            <label class="label">数据表：</label>
+            <el-select 
+              v-model="currentDataTables" 
+              placeholder="请选择数据表" 
+              class="table-select"
+              multiple
+              collapse-tags
+              collapse-tags-tooltip
+              :disabled="!currentDataSource"
+              @change="handleDataTableChange"
+            >
+              <el-option 
+                v-for="item in availableDataTables" 
+                :key="item.id" 
+                :label="item.name" 
+                :value="item.id" 
+              />
+            </el-select>
+          </div>
+          
+          <el-button 
+            type="primary" 
+            size="small" 
+            class="preview-btn"
+            :disabled="!currentDataTables || currentDataTables.length === 0"
+            @click="openDataTablePreview"
+          >
+            预览
+          </el-button>
         </div>
         
         <!-- 单行：占满宽度的文本输入框 -->
@@ -278,21 +301,26 @@
       v-model="dataPreviewModalVisible"
       :preview-data="previewData"
       :is-multi-table="isMultiTable"
+      :selected-tables="selectedTablesForPreview"
+      @table-change="handlePreviewTableChange"
     />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useChatStore } from '@/store/modules/chat'
 import { useUIStore } from '@/store/modules/ui'
 import { useRoute } from 'vue-router'
 import { Setting } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import SmartChart from '@/components/Chart/SmartChart.vue'
 import ChartRenderer from '@/components/ChartRenderer.vue'
 import DataTable from '@/components/DataTable.vue'
 import DataSourceSelector from '@/components/DataSource/DataSourceSelector.vue'
 import DataPreviewModal from '@/components/DataSource/DataPreviewModal.vue'
 import { useDataPrepStore } from '@/store/modules/dataPrep'
+import { websocketService } from '@/services/websocketService'
 
 const chatStore = useChatStore()
 const uiStore = useUIStore()
@@ -305,7 +333,8 @@ const toggleConfigDrawer = () => {
 
 // 状态
 const inputText = ref('')
-const currentDataSource = ref([])
+const currentDataSource = ref('')
+const currentDataTables = ref<string[]>([])
 const chatMode = ref('query')
 const dataInterpretation = ref(true)
 const fluctuationAnalysis = ref(false)
@@ -319,13 +348,20 @@ const previewData = ref({
 })
 const isMultiTable = ref(false)
 
-// 获取数据源列表
+const selectedTablesForPreview = ref([])// 获取数据源列表
 const dataPrepStore = useDataPrepStore()
 const dataSources = computed(() => {
   return dataPrepStore.dataSources
 })
 
-// 加载状态和错误处理
+
+// 根据选中的数据源获取可用的数据表
+const availableDataTables = computed(() => {
+  if (!currentDataSource.value) {
+    return []
+  }
+  return dataPrepStore.getDataTablesBySourceId(currentDataSource.value) || []
+})// 加载状态和错误处理
 const isLoading = computed(() => {
   return dataPrepStore.isLoadingDataSources || uiStore.isLoading
 })
@@ -391,13 +427,73 @@ const selectRecommendedQuestion = (question) => {
   inputText.value = question
 }
 
+// 数据源变更
+const handleDataSourceChange = async (value: string | null) => {
+  currentDataSource.value = value
+  // 清空数据表选择
+  currentDataTables.value = []
+  
+  // 更新 chatStore（需要传递数组格式以保持兼容性）
+  chatStore.setDataSource(value ? [value] : [])
+  
+  // 加载选中数据源下的数据表
+  if (value) {
+    await dataPrepStore.loadDataTables(value)
+  }
+}
+
+
+// 数据表变更
+const handleDataTableChange = (values) => {
+  currentDataTables.value = values
+  chatStore.setDataTables(values)
+}
+
+// 打开数据表预览
+const openDataTablePreview = () => {
+  // 获取选中的数据表信息
+  const selectedTables = availableDataTables.value.filter(table =>
+    currentDataTables.value.includes(table.id)
+  )
+  
+  if (selectedTables.length === 0) {
+    ElMessage.warning('请先选择数据表')
+    return
+  }
+  
+  // 设置选中的表列表供预览模态框使用
+  selectedTablesForPreview.value = selectedTables
+  
+  // 如果只选择了一张表，直接预览
+  if (selectedTables.length === 1) {
+    isMultiTable.value = false
+    handleDataSourcePreview(selectedTables[0])
+  } else {
+    // 多张表，显示选择对话框
+    isMultiTable.value = true
+    // 默认预览第一张表
+    handleDataSourcePreview(selectedTables[0])
+  }
+  
+  // 打开预览模态框
+  dataPreviewModalVisible.value = true
+}
+
+// 处理预览表切换
+const handlePreviewTableChange = async (tableId) => {
+  // 根据表ID找到对应的表对象
+  const table = selectedTablesForPreview.value.find(t => t.id === tableId)
+  if (table) {
+    await handleDataSourcePreview(table)
+  }
+}
+
 // 打开数据源选择弹窗
-const openDataSourceSelector = () => {
-  // 重置数据源选择状态
-  dataSources.value.forEach(table => {
-    table.selected = currentDataSource.value.includes(table.id)
-  })
-  dataSourceSelectorVisible.value = true
+
+// 处理数据源重试
+const handleDataSourceRetry = () => {
+  dataPrepStore.resetDataSourceState()
+  dataPrepStore.loadDataSources()
 }
 
 // 处理数据源选择确认
@@ -409,30 +505,48 @@ const handleDataSourceConfirm = (selectedTables) => {
 }
 
 // 处理数据源预览
-const handleDataSourcePreview = (table) => {
-  // 为简化，这里只预览单个表
-  // 实际应用中，这里应该调用后端 API 获取表结构和数据
-  previewData.value = {
-    schema: [
-      { name: 'id', type: 'int', description: '主键ID', unit: '', category: '标识', isPrimaryKey: true },
-      { name: 'name', type: 'varchar', description: '姓名', unit: '', category: '标识', isPrimaryKey: false },
-      { name: 'age', type: 'int', description: '年龄', unit: '岁', category: '人口', isPrimaryKey: false },
-      { name: 'email', type: 'varchar', description: '邮箱地址', unit: '', category: '联系方式', isPrimaryKey: false },
-      { name: 'created_at', type: 'datetime', description: '创建时间', unit: '', category: '时间', isPrimaryKey: false }
-    ],
-    data: [
-      { id: 1, name: '张三', age: 25, email: 'zhangsan@example.com', created_at: '2023-01-15 10:30:00' },
-      { id: 2, name: '李四', age: 30, email: 'lisi@example.com', created_at: '2023-02-20 14:45:00' },
-      { id: 3, name: '王五', age: 28, email: 'wangwu@example.com', created_at: '2023-03-10 09:15:00' }
-    ]
+const handleDataSourcePreview = async (table) => {
+  try {
+    // 显示加载状态
+    uiStore.setLoading(true, '正在加载表预览数据...')
+    
+    // 调用后端 API 获取表字段信息
+    const fields = await dataTableApi.getFields(table.id)
+    
+    // 调用后端 API 获取表数据预览
+    const data = await dataTableApi.getPreview(table.id, 100)
+    
+    // 转换字段信息为预览格式
+    const schema = fields.map(field => ({
+      name: field.field_name,
+      type: field.data_type,
+      description: field.description || '',
+      unit: '',
+      category: '',
+      isPrimaryKey: field.is_primary_key
+    }))
+    
+    // 更新预览数据
+    previewData.value = {
+      schema,
+      data
+    }
+    
+    // 打开预览模态框
+    dataPreviewModalVisible.value = true
+    
+  } catch (error) {
+    console.error('加载表预览数据失败:', error)
+    ElMessage.error('加载表预览数据失败，请稍后重试')
+    
+    // 即使失败也显示空数据，避免界面卡住
+    previewData.value = {
+      schema: [],
+      data: []
+    }
+  } finally {
+    uiStore.setLoading(false)
   }
-  dataPreviewModalVisible.value = true
-}
-
-// 处理数据源重试
-const handleDataSourceRetry = () => {
-  dataPrepStore.resetDataSourceState()
-  dataPrepStore.loadDataSources()
 }
 
 // 上传图片
@@ -477,13 +591,6 @@ const handleFileUpload = (event) => {
     // 清空文件输入
     event.target.value = ''
   }
-}
-
-// 数据源变更
-const handleDataSourceChange = (values) => {
-  // values 是一个数组，包含所有选中的数据源 ID
-  currentDataSource.value = values
-  chatStore.setDataSource(values)
 }
 
 // 切换聊天模式

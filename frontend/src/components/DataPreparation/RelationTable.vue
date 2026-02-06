@@ -57,14 +57,15 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { ElInput, ElButton, ElTable, ElTableColumn, ElPagination, ElPopconfirm, ElDialog } from 'element-plus';
+import { ElInput, ElButton, ElTable, ElTableColumn, ElPagination, ElPopconfirm, ElDialog, ElMessage } from 'element-plus';
 import { Search, Plus } from '@element-plus/icons-vue';
+import axios from 'axios';
 
 interface Relation {
-  id: number;
+  id: string;
   mainTable: string;
   relatedTable: string;
-  joinType: 'INNER' | 'LEFT' | 'RIGHT';
+  joinType: 'INNER' | 'LEFT' | 'RIGHT' | 'FULL';
   description: string;
 }
 
@@ -89,18 +90,35 @@ const filteredData = computed(() =>
   )
 );
 
-const fetchRelations = () => {
+// 从后端 API 加载表关联数据
+const fetchRelations = async () => {
   loading.value = true;
-  // Mock API call
-  setTimeout(() => {
-    const mockData: Relation[] = [
-      { id: 1, mainTable: 'orders', relatedTable: 'users', joinType: 'LEFT', description: '订单关联用户' },
-      { id: 2, mainTable: 'orders', relatedTable: 'products', joinType: 'INNER', description: '订单关联产品' },
-    ];
-    relations.value = mockData;
-    total.value = mockData.length;
+  try {
+    const response = await axios.get('/api/table-relations', {
+      params: {
+        skip: (currentPage.value - 1) * pageSize.value,
+        limit: pageSize.value
+      }
+    });
+    
+    // 转换 API 响应格式到组件需要的格式
+    relations.value = response.data.map((item: any) => ({
+      id: item.id,
+      mainTable: item.primary_table_name,
+      relatedTable: item.foreign_table_name,
+      joinType: item.join_type,
+      description: item.description || ''
+    }));
+    
+    total.value = response.data.length;
+  } catch (error) {
+    console.error('加载表关联失败:', error);
+    ElMessage.error('加载表关联失败');
+    relations.value = [];
+    total.value = 0;
+  } finally {
     loading.value = false;
-  }, 500);
+  }
 };
 
 onMounted(() => {
@@ -121,10 +139,15 @@ const handleEdit = (row: Relation) => {
   dialogVisible.value = true;
 };
 
-const handleDelete = (row: Relation) => {
-  console.log('Delete relation:', row.id);
-  // Call API to delete, then refetch
-  fetchRelations();
+const handleDelete = async (row: Relation) => {
+  try {
+    await axios.delete(`/api/table-relations/${row.id}`);
+    ElMessage.success('删除成功');
+    await fetchRelations();
+  } catch (error) {
+    console.error('删除表关联失败:', error);
+    ElMessage.error('删除失败');
+  }
 };
 
 const handleSizeChange = (val: number) => {
@@ -155,15 +178,16 @@ const submitForm = async () => {
     
     // TODO: 实际的 API 调用
     // if (isEdit.value) {
-    //   await relationApi.updateRelation(currentRelation.value.id, formData);
+    //   await axios.put(`/api/table-relations/${currentRelation.value.id}`, formData);
     // } else {
-    //   await relationApi.createRelation(formData);
+    //   await axios.post('/api/table-relations', formData);
     // }
     
     dialogVisible.value = false;
     await fetchRelations();
   } catch (error) {
     console.error('提交表单时出错:', error);
+    ElMessage.error('操作失败');
   } finally {
     submitting.value = false;
   }

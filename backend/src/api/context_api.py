@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Path, Depends
 from typing import List, Dict, Optional
 from pydantic import BaseModel
-from src.services.context_manager import context_manager
+from src.services.context_manager import get_context_manager
 from src.models.database_models import ContextType, ModelType
 from src.utils import get_db_session as get_db
 
@@ -44,10 +44,24 @@ def get_session_context(
         包含messages、token_count、summary的字典
     """
     try:
-        context = context_manager.get_session_context(session_id, context_type)
-        if not context:
+        # Get session context based on type
+        if context_type == ContextType.local_model:
+            context_data = get_context_manager().get_local_history(session_id, max_messages=10)
+        else:
+            context_data = get_context_manager().get_cloud_history(session_id, max_messages=10)
+        
+        if not context_data:
             raise HTTPException(status_code=404, detail="Context not found")
-        return context
+            
+        # Get session stats for additional context info
+        stats = get_context_manager().get_session_stats(session_id)
+        
+        return {
+            "messages": context_data,
+            "token_count": stats.get("total_tokens", 0),
+            "message_count": len(context_data),
+            "session_stats": stats
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get session context: {str(e)}")
 
@@ -69,16 +83,22 @@ def summarize_session_context(
         总结文本
     """
     try:
-        # 如果没有提供messages，则从数据库获取
+        # Get messages from context manager
         if not request or not request.messages:
-            messages = context_manager.get_session_messages(session_id, limit=100)
+            if request and request.context_type == ContextType.local_model:
+                messages = get_context_manager().get_local_history(session_id, max_messages=100)
+            else:
+                messages = get_context_manager().get_cloud_history(session_id, max_messages=100)
         else:
             messages = request.messages
         
         if not messages:
             raise HTTPException(status_code=404, detail="No messages found for summarization")
         
-        summary = context_manager.summarize_context(session_id, request.context_type, messages)
+        # Create a simple summary (since the context manager doesn't have summarize_context method)
+        summary = f"Session contains {len(messages)} messages"
+        if messages:
+            summary += f", latest activity: {messages[-1].get('timestamp', 'unknown')}"
         
         return SummaryResponse(summary=summary)
         
@@ -102,7 +122,8 @@ def get_session_messages(
         消息列表
     """
     try:
-        messages = context_manager.get_session_messages(session_id, limit)
+        # Get messages from local history (most comprehensive)
+        messages = get_context_manager().get_local_history(session_id, max_messages=limit)
         return MessageResponse(messages=messages)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get session messages: {str(e)}")
@@ -122,7 +143,23 @@ def get_token_usage(
         token使用统计信息
     """
     try:
-        token_usage = context_manager.get_token_usage(session_id)
+        # Get session stats which includes token information
+        stats = get_context_manager().get_session_stats(session_id)
+        if not stats:
+            raise HTTPException(status_code=404, detail="Session not found")
+            
+        # Create token usage response from available stats
+        token_usage = {
+            "session_id": session_id,
+            "total_turns": stats.get("local_message_count", 0),
+            "total_input_tokens": 0,  # Not tracked separately in current implementation
+            "total_output_tokens": 0,  # Not tracked separately in current implementation
+            "total_tokens": stats.get("total_tokens", 0),
+            "model_usage": {
+                "cloud_messages": stats.get("cloud_message_count", 0),
+                "local_messages": stats.get("local_message_count", 0)
+            }
+        }
         return TokenUsageResponse(**token_usage)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get token usage: {str(e)}")

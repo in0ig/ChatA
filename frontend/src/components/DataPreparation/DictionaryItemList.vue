@@ -131,8 +131,18 @@ const tableRef = ref<any>(null)
 const localItems = ref<DictionaryItem[]>([])
 
 watch(() => props.items, (newItems) => {
+  console.log('📋 DictionaryItemList - props.items changed:', newItems)
+  console.log('📋 DictionaryItemList - items count:', newItems?.length || 0)
   localItems.value = [...newItems]
 }, { immediate: true, deep: true })
+
+watch(() => props.dictionaryId, (newId) => {
+  console.log('📋 DictionaryItemList - props.dictionaryId changed:', newId)
+}, { immediate: true })
+
+watch(() => props.loading, (newLoading) => {
+  console.log('📋 DictionaryItemList - props.loading changed:', newLoading)
+}, { immediate: true })
 
 
 // 方法

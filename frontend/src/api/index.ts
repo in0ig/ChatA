@@ -16,7 +16,7 @@ export {
 
 // Initialize axios instance with default configuration
 const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL: '/api',  // Vite proxy will forward /api/* to backend
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拦截器修复测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; background: #f0f8f0; padding: 10px; border-radius: 3px; }
+        .error { color: red; background: #fff0f0; padding: 10px; border-radius: 3px; }
+        .info { color: blue; background: #f0f0ff; padding: 10px; border-radius: 3px; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>拦截器修复测试</h1>
+    
+    <div class="test-section">
+        <h3>修复说明</h3>
+        <div class="info">
+            <p><strong>问题：</strong> 前端拦截器对所有包含 `/datasources` 的 URL 都进行 name 字段验证</p>
+            <p><strong>影响：</strong> `/datasources/test` 也被验证，但测试连接的请求格式不同</p>
+            <p><strong>修复：</strong> 排除 `/datasources/test` 路径的验证</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>拦截器逻辑测试</h3>
+        <button onclick="testOldLogic()">测试修复前逻辑</button>
+        <button onclick="testNewLogic()">测试修复后逻辑</button>
+        <button onclick="testCreateDataSource()">测试创建数据源（应该验证）</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>测试结果</h3>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function testOldLogic() {
+            const resultDiv = document.getElementById('result');
+            
+            const config = {
+                method: 'POST',
+                url: '/api/datasources/test',
+                data: {
+                    name: 'demo_datasource',
+                    source_type: 'DATABASE',
+                    // ... 其他字段
+                }
+            };
+
+            try {
+                // 旧逻辑：对所有 /datasources 路径都验证
+                if (config.method?.toUpperCase() === 'POST' || config.method?.toUpperCase() === 'PUT') {
+                    if (config.data && typeof config.data === 'object') {
+                        if (config.url?.includes('/datasources') && config.data.name === undefined) {
+                            throw new Error('数据源名称不能为空');
+                        }
+                    }
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h4>✅ 旧逻辑测试通过</h4>
+                        <p>URL: ${config.url}</p>
+                        <p>包含 /datasources: ${config.url?.includes('/datasources')}</p>
+                        <p>name 字段: ${config.data.name}</p>
+                        <p>结果: 不会抛出错误（因为 name 字段存在）</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 旧逻辑测试失败</h4>
+                        <p>错误: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function testNewLogic() {
+            const resultDiv = document.getElementById('result');
+            
+            const config = {
+                method: 'POST',
+                url: '/api/datasources/test',
+                data: {
+                    name: 'demo_datasource',
+                    source_type: 'DATABASE',
+                    // ... 其他字段
+                }
+            };
+
+            try {
+                // 新逻辑：排除 /datasources/test 路径
+                if (config.method?.toUpperCase() === 'POST' || config.method?.toUpperCase() === 'PUT') {
+                    if (config.data && typeof config.data === 'object') {
+                        if (config.url?.includes('/datasources') && 
+                            !config.url?.includes('/datasources/test') && 
+                            config.data.name === undefined) {
+                            throw new Error('数据源名称不能为空');
+                        }
+                    }
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h4>✅ 新逻辑测试通过</h4>
+                        <p>URL: ${config.url}</p>
+                        <p>包含 /datasources: ${config.url?.includes('/datasources')}</p>
+                        <p>包含 /datasources/test: ${config.url?.includes('/datasources/test')}</p>
+                        <p>name 字段: ${config.data.name}</p>
+                        <p>结果: 跳过验证（因为是测试连接路径）</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ 新逻辑测试失败</h4>
+                        <p>错误: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function testCreateDataSource() {
+            const resultDiv = document.getElementById('result');
+            
+            const configWithName = {
+                method: 'POST',
+                url: '/api/datasources',
+                data: {
+                    name: 'test_datasource',
+                    type: 'mysql'
+                }
+            };
+
+            const configWithoutName = {
+                method: 'POST',
+                url: '/api/datasources',
+                data: {
+                    type: 'mysql'
+                    // 缺少 name 字段
+                }
+            };
+
+            let results = [];
+
+            // 测试有 name 字段的情况
+            try {
+                if (configWithName.method?.toUpperCase() === 'POST' || configWithName.method?.toUpperCase() === 'PUT') {
+                    if (configWithName.data && typeof configWithName.data === 'object') {
+                        if (configWithName.url?.includes('/datasources') && 
+                            !configWithName.url?.includes('/datasources/test') && 
+                            configWithName.data.name === undefined) {
+                            throw new Error('数据源名称不能为空');
+                        }
+                    }
+                }
+                results.push('✅ 有 name 字段：验证通过');
+            } catch (error) {
+                results.push(`❌ 有 name 字段：${error.message}`);
+            }
+
+            // 测试没有 name 字段的情况
+            try {
+                if (configWithoutName.method?.toUpperCase() === 'POST' || configWithoutName.method?.toUpperCase() === 'PUT') {
+                    if (configWithoutName.data && typeof configWithoutName.data === 'object') {
+                        if (configWithoutName.url?.includes('/datasources') && 
+                            !configWithoutName.url?.includes('/datasources/test') && 
+                            configWithoutName.data.name === undefined) {
+                            throw new Error('数据源名称不能为空');
+                        }
+                    }
+                }
+                results.push('❌ 没有 name 字段：应该抛出错误但没有');
+            } catch (error) {
+                results.push(`✅ 没有 name 字段：正确抛出错误 - ${error.message}`);
+            }
+
+            resultDiv.innerHTML = `
+                <div class="info">
+                    <h4>📋 创建数据源验证测试</h4>
+                    <p><strong>测试结果：</strong></p>
+                    <ul>
+                        ${results.map(result => `<li>${result}</li>`).join('')}
+                    </ul>
+                    <p><strong>结论：</strong> 修复后的逻辑正确区分了测试连接和创建数据源的请求</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

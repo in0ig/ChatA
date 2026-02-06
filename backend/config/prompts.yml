@@ -1,0 +1,193 @@
+intent_recognition:
+  name: "意图识别"
+  version: "1.0"
+  description: "识别用户问题的意图类型"
+  variables: ["user_question"]
+  content: |
+    请分析用户的问题，判断用户的意图类型：
+
+    用户问题：{{user_question}}
+
+    请从以下两种意图中选择一种：
+    1. 智能问数：用户想要查询具体的数据，获取数值、统计结果等
+    2. 生成报告：用户想要生成综合性的分析报告或总结
+
+    请以JSON格式返回结果：
+    {
+      "intent": "query" | "report",
+      "confidence": 0.0-1.0,
+      "reasoning": "判断理由"
+    }
+
+table_selection:
+  name: "智能选表"
+  version: "1.0"
+  description: "根据用户问题选择相关数据表"
+  variables: ["user_question", "intent_type", "semantic_context"]
+  content: |
+    基于用户问题和可用的数据资源，请选择最相关的数据表：
+
+    用户问题：{{user_question}}
+    意图类型：{{intent_type}}
+
+    语义增强上下文：
+    {{semantic_context}}
+
+    请分析用户问题中的关键词，结合表结构、字段含义和业务知识，选择最相关的表。
+
+    请以JSON格式返回结果：
+    {
+      "selectedTables": [
+        {
+          "tableId": "表ID",
+          "tableName": "表名",
+          "relevanceScore": 0.0-1.0,
+          "reasoning": "选择理由",
+          "relevantFields": ["相关字段列表"]
+        }
+      ],
+      "overallReasoning": "整体选择逻辑"
+    }
+
+intent_clarification:
+  name: "意图澄清"
+  version: "1.0"
+  description: "生成意图澄清问题"
+  variables: ["user_question", "selected_tables"]
+  content: |
+    基于用户问题和选择的数据表，生成意图澄清问题：
+
+    用户原始问题：{{user_question}}
+
+    选择的数据表：
+    {{selected_tables}}
+
+    请分析可能的歧义点和需要确认的细节，生成澄清问题。
+
+    请以JSON格式返回：
+    {
+      "clarificationNeeded": true/false,
+      "questions": [
+        {
+          "question": "澄清问题",
+          "options": ["选项1", "选项2", "选项3"],
+          "type": "single_choice" | "multiple_choice" | "text_input"
+        }
+      ],
+      "summary": "理解总结：我理解您想要..."
+    }
+
+sql_generation:
+  name: "SQL生成"
+  version: "1.0"
+  description: "根据澄清后的需求生成SQL查询"
+  variables: ["original_question", "clarified_requirement", "semantic_context", "db_type"]
+  content: |
+    请根据用户需求生成SQL查询语句：
+
+    用户原始问题：{{original_question}}
+    澄清后的需求：{{clarified_requirement}}
+
+    语义增强上下文：
+    {{semantic_context}}
+
+    数据库类型：{{db_type}}
+
+    请生成标准的SQL查询语句，要求：
+    1. 语法正确，符合{{db_type}}数据库规范
+    2. 字段名和表名准确
+    3. 查询逻辑符合用户需求
+    4. 包含必要的WHERE条件和GROUP BY子句
+    5. 结果集大小合理（建议添加LIMIT）
+
+    请以JSON格式返回：
+    {
+      "sql": "生成的SQL语句",
+      "explanation": "SQL逻辑说明",
+      "estimatedRows": "预估结果行数",
+      "executionPlan": "执行计划说明"
+    }
+
+data_analysis:
+  name: "数据分析"
+  version: "1.0"
+  description: "分析查询结果数据"
+  variables: ["user_question", "query_result", "previous_data"]
+  content: |
+    请分析查询结果数据，回答用户问题：
+
+    用户问题：{{user_question}}
+
+    当前查询结果：
+    {{query_result}}
+
+    历史数据（用于对比）：
+    {{previous_data}}
+
+    请基于数据进行分析，提供以下内容：
+    1. 数据摘要和关键指标
+    2. 趋势分析和变化情况
+    3. 异常数据和洞察发现
+    4. 业务建议和后续行动
+
+    请以自然语言回答，重点突出数据洞察。
+
+chart_recommendation:
+  name: "图表推荐"
+  version: "1.0"
+  description: "推荐合适的图表类型"
+  variables: ["user_question", "query_result", "data_characteristics"]
+  content: |
+    基于查询结果和数据特征，推荐最合适的图表类型：
+
+    用户问题：{{user_question}}
+
+    查询结果：
+    {{query_result}}
+
+    数据特征：
+    {{data_characteristics}}
+
+    请分析数据类型、维度数量、数据分布等特征，推荐最佳图表类型。
+
+    请以JSON格式返回：
+    {
+      "recommendedChart": "bar" | "line" | "pie" | "scatter" | "heatmap" | "radar",
+      "confidence": 0.0-1.0,
+      "reasoning": "推荐理由",
+      "alternatives": ["备选图表类型"],
+      "chartConfig": {
+        "title": "图表标题",
+        "xAxis": "X轴字段",
+        "yAxis": "Y轴字段",
+        "series": "数据系列配置"
+      }
+    }
+
+error_recovery:
+  name: "错误恢复"
+  version: "1.0"
+  description: "SQL错误分析和恢复"
+  variables: ["original_sql", "error_message", "semantic_context"]
+  content: |
+    分析SQL执行错误并生成修复后的SQL：
+
+    原始SQL：
+    {{original_sql}}
+
+    错误信息：
+    {{error_message}}
+
+    语义上下文：
+    {{semantic_context}}
+
+    请分析错误原因并生成修复后的SQL语句。
+
+    请以JSON格式返回：
+    {
+      "errorType": "syntax_error" | "field_not_found" | "table_not_found" | "type_mismatch" | "permission_denied",
+      "errorAnalysis": "错误分析",
+      "fixedSQL": "修复后的SQL语句",
+      "changes": ["修改说明列表"],
+      "confidence": 0.0-1.0
+    }

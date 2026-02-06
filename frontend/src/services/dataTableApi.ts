@@ -109,7 +109,7 @@ export const dataTableApi = {
   
   // 获取所有数据表
   getAll(): Promise<DataTable[]> {
-    return this.getDataTables({ page: 1, page_size: 1000 }).then(response => 
+    return this.getDataTables({ page: 1, page_size: 100 }).then(response => 
       response.items.map(item => ({
         id: item.id,
         name: item.table_name,
@@ -128,7 +128,16 @@ export const dataTableApi = {
   
   // 根据数据源ID获取数据表
   getBySourceId(sourceId: string): Promise<DataTable[]> {
-    return api.get('/data-tables', { params: { source_id: sourceId } })
+    return this.getDataTables({ source_id: sourceId, page: 1, page_size: 100 }).then(response => 
+      response.items.map(item => ({
+        id: item.id,
+        name: item.table_name,
+        sourceId: item.data_source_id,
+        sourceName: item.data_source_name || '未知数据源',
+        fieldCount: item.field_count,
+        rowCount: item.row_count
+      }))
+    )
   },
   
   // 根据数据源ID获取数据表 (别名)
@@ -163,12 +172,15 @@ export const dataTableApi = {
   
   // 获取表字段信息
   getFields(tableId: string): Promise<TableField[]> {
-    return api.get(`/data-tables/${tableId}/fields`)
+    return api.get(`/data-tables/${tableId}/columns`)
   },
   
   // 获取表数据预览
+  // 注意：后端暂未实现此端点，返回空数组
   getPreview(tableId: string, limit: number = 100): Promise<any[]> {
-    return api.get(`/data-tables/${tableId}/preview`, { params: { limit } })
+    // TODO: 等待后端实现 /data-tables/{tableId}/preview 端点
+    console.warn('数据预览功能暂未实现，返回空数据')
+    return Promise.resolve([])
   },
   
   // 执行 SQL 语句

@@ -20,7 +20,7 @@ if src_path not in sys.path:
 print(f"Added {src_path} to Python path")
 
 # 导入所有模型以确保Base.metadata包含所有表
-from src.models.base import Base
+from src.models import Base
 from src.models.data_preparation_model import (
     DataTable, TableField, Dictionary, DictionaryItem, DynamicDictionaryConfig, 
     TableRelation, FieldMapping, DictionaryVersion, DictionaryVersionItem,

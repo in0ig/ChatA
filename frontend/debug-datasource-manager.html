@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据源管理调试</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .debug-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .debug-title {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background: #f0f9ff;
+            color: #1890ff;
+            border: 1px solid #b3d8ff;
+        }
+        .error {
+            background: #fff2f0;
+            color: #ff4d4f;
+            border: 1px solid #ffccc7;
+        }
+        .info {
+            background: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="debug-container">
+            <h1>数据源管理组件调试</h1>
+            
+            <div class="debug-section">
+                <div class="debug-title">1. 基础按钮测试</div>
+                <el-button type="primary" @click="testBasicClick">
+                    <el-icon><Plus /></el-icon>
+                    基础按钮测试
+                </el-button>
+                <div v-if="basicResult" :class="basicResultClass" class="test-result">
+                    {{ basicResult }}
+                </div>
+            </div>
+
+            <div class="debug-section">
+                <div class="debug-title">2. 对话框测试</div>
+                <el-button type="primary" @click="showDialog = true">
+                    <el-icon><Plus /></el-icon>
+                    打开对话框
+                </el-button>
+                <el-button @click="showDialog = false" style="margin-left: 10px;">
+                    关闭对话框
+                </el-button>
+                <div class="test-result info">
+                    对话框状态: {{ showDialog ? '显示' : '隐藏' }}
+                </div>
+                
+                <el-dialog
+                    title="测试对话框"
+                    v-model="showDialog"
+                    width="500px"
+                >
+                    <p>这是一个测试对话框，用于验证 Element Plus 对话框功能是否正常。</p>
+                    <template #footer>
+                        <el-button @click="showDialog = false">关闭</el-button>
+                    </template>
+                </el-dialog>
+            </div>
+
+            <div class="debug-section">
+                <div class="debug-title">3. 数据源管理组件模拟</div>
+                <el-card>
+                    <template #header>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>数据源管理</span>
+                            <el-button type="primary" @click="showAddDialog = true">
+                                <el-icon><Plus /></el-icon>
+                                新增数据源
+                            </el-button>
+                        </div>
+                    </template>
+
+                    <el-table :data="dataSourceList" empty-text="暂无数据源">
+                        <el-table-column prop="name" label="数据源名称" />
+                        <el-table-column prop="type" label="数据库类型" />
+                        <el-table-column prop="host" label="主机地址" />
+                        <el-table-column label="操作" width="200">
+                            <template #default="{ row }">
+                                <el-button size="small" @click="editDataSource(row)">编辑</el-button>
+                                <el-button size="small" type="danger" @click="deleteDataSource(row)">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+
+                <el-dialog
+                    title="新增数据源"
+                    v-model="showAddDialog"
+                    width="600px"
+                >
+                    <el-form :model="formData" label-width="120px">
+                        <el-form-item label="数据源名称">
+                            <el-input v-model="formData.name" placeholder="请输入数据源名称" />
+                        </el-form-item>
+                        <el-form-item label="数据库类型">
+                            <el-select v-model="formData.type" placeholder="请选择数据库类型" style="width: 100%">
+                                <el-option label="MySQL" value="mysql" />
+                                <el-option label="SQL Server" value="sqlserver" />
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="主机地址">
+                            <el-input v-model="formData.host" placeholder="请输入主机地址" />
+                        </el-form-item>
+                    </el-form>
+                    <template #footer>
+                        <el-button @click="showAddDialog = false">取消</el-button>
+                        <el-button type="primary" @click="handleSubmit">确定</el-button>
+                    </template>
+                </el-dialog>
+
+                <div class="test-result info" style="margin-top: 15px;">
+                    新增对话框状态: {{ showAddDialog ? '显示' : '隐藏' }}
+                </div>
+            </div>
+
+            <div class="debug-section">
+                <div class="debug-title">4. 控制台日志</div>
+                <div class="test-result info">
+                    请打开浏览器开发者工具查看控制台输出
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+        const { ElButton, ElIcon, ElDialog, ElCard, ElTable, ElTableColumn, ElForm, ElFormItem, ElInput, ElSelect, ElOption } = ElementPlus;
+
+        createApp({
+            components: {
+                ElButton,
+                ElIcon,
+                ElDialog,
+                ElCard,
+                ElTable,
+                ElTableColumn,
+                ElForm,
+                ElFormItem,
+                ElInput,
+                ElSelect,
+                ElOption
+            },
+            setup() {
+                const showDialog = ref(false);
+                const showAddDialog = ref(false);
+                const basicResult = ref('');
+                const basicResultClass = ref('info');
+
+                const formData = ref({
+                    name: '',
+                    type: 'mysql',
+                    host: ''
+                });
+
+                const dataSourceList = ref([
+                    { id: 1, name: '测试数据源1', type: 'mysql', host: 'localhost' },
+                    { id: 2, name: '测试数据源2', type: 'sqlserver', host: '192.168.1.100' }
+                ]);
+
+                const testBasicClick = () => {
+                    console.log('基础按钮被点击');
+                    basicResult.value = '基础按钮点击成功！';
+                    basicResultClass.value = 'success';
+                };
+
+                const editDataSource = (row) => {
+                    console.log('编辑数据源:', row);
+                    alert(`编辑数据源: ${row.name}`);
+                };
+
+                const deleteDataSource = (row) => {
+                    console.log('删除数据源:', row);
+                    if (confirm(`确定要删除数据源 "${row.name}" 吗？`)) {
+                        const index = dataSourceList.value.findIndex(item => item.id === row.id);
+                        if (index > -1) {
+                            dataSourceList.value.splice(index, 1);
+                        }
+                    }
+                };
+
+                const handleSubmit = () => {
+                    console.log('提交表单:', formData.value);
+                    if (!formData.value.name || !formData.value.host) {
+                        alert('请填写完整信息');
+                        return;
+                    }
+                    
+                    const newDataSource = {
+                        id: Date.now(),
+                        name: formData.value.name,
+                        type: formData.value.type,
+                        host: formData.value.host
+                    };
+                    
+                    dataSourceList.value.push(newDataSource);
+                    showAddDialog.value = false;
+                    
+                    // 重置表单
+                    formData.value = {
+                        name: '',
+                        type: 'mysql',
+                        host: ''
+                    };
+                    
+                    alert('数据源添加成功！');
+                };
+
+                // 监听对话框状态变化
+                const unwatchDialog = Vue.watch(showAddDialog, (newVal, oldVal) => {
+                    console.log(`对话框状态变化: ${oldVal} -> ${newVal}`);
+                });
+
+                return {
+                    showDialog,
+                    showAddDialog,
+                    basicResult,
+                    basicResultClass,
+                    formData,
+                    dataSourceList,
+                    testBasicClick,
+                    editDataSource,
+                    deleteDataSource,
+                    handleSubmit
+                };
+            }
+        }).use(ElementPlus).mount('#app');
+
+        // 全局错误监听
+        window.addEventListener('error', (event) => {
+            console.error('全局错误:', event.error);
+        });
+
+        // Vue 错误监听
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('未处理的 Promise 拒绝:', event.reason);
+        });
+
+        console.log('调试页面已加载');
+    </script>
+</body>
+</html>

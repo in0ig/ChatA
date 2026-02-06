@@ -315,6 +315,9 @@ async def delete_dictionary(
         
         logger.info(f"Dictionary {dict_id} deleted successfully")
         
+    except HTTPException:
+        # Re-raise HTTP exceptions without converting to 500
+        raise
     except Exception as e:
         logger.error(f"Failed to delete dictionary {dict_id}: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail="删除字典失败")
@@ -513,6 +516,9 @@ async def delete_dictionary_item(
         
         logger.info(f"Dictionary item {item_id} deleted successfully")
         
+    except HTTPException:
+        # Re-raise HTTP exceptions without converting to 500
+        raise
     except Exception as e:
         logger.error(f"Failed to delete dictionary item {item_id}: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail="删除字典项失败")

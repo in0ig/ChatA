@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单按钮测试</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background: #f0f9ff; color: #1890ff; border: 1px solid #b3d8ff; }
+        .error { background: #fff2f0; color: #ff4d4f; border: 1px solid #ffccc7; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="test-container">
+            <h1>数据源管理按钮测试</h1>
+            
+            <h2>1. 基础按钮测试</h2>
+            <el-button type="primary" @click="basicClick">基础按钮</el-button>
+            <div v-if="basicResult" class="result success">{{ basicResult }}</div>
+            
+            <h2>2. 对话框按钮测试</h2>
+            <el-button type="primary" @click="showDialog = true">
+                <el-icon><Plus /></el-icon>
+                打开对话框
+            </el-button>
+            <div class="result" :class="showDialog ? 'success' : 'error'">
+                对话框状态: {{ showDialog ? '显示' : '隐藏' }}
+            </div>
+            
+            <el-dialog
+                title="测试对话框"
+                v-model="showDialog"
+                width="500px"
+            >
+                <p>这是一个测试对话框</p>
+                <template #footer>
+                    <el-button @click="showDialog = false">关闭</el-button>
+                </template>
+            </el-dialog>
+            
+            <h2>3. 数据源管理模拟</h2>
+            <el-card>
+                <template #header>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>数据源管理</span>
+                        <el-button type="primary" @click="showAddDialog = true">
+                            <el-icon><Plus /></el-icon>
+                            新增数据源
+                        </el-button>
+                    </div>
+                </template>
+                <p>数据源列表内容...</p>
+            </el-card>
+            
+            <div class="result" :class="showAddDialog ? 'success' : 'error'">
+                新增对话框状态: {{ showAddDialog ? '显示' : '隐藏' }}
+            </div>
+            
+            <el-dialog
+                title="新增数据源"
+                v-model="showAddDialog"
+                width="600px"
+            >
+                <p>这里是新增数据源表单</p>
+                <template #footer>
+                    <el-button @click="showAddDialog = false">取消</el-button>
+                    <el-button type="primary" @click="handleSubmit">确定</el-button>
+                </template>
+            </el-dialog>
+            
+            <h2>4. 控制台日志</h2>
+            <div class="result success">请打开浏览器开发者工具查看控制台输出</div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const { ElButton, ElIcon, ElDialog, ElCard } = ElementPlus;
+
+        createApp({
+            components: {
+                ElButton,
+                ElIcon,
+                ElDialog,
+                ElCard
+            },
+            setup() {
+                const basicResult = ref('');
+                const showDialog = ref(false);
+                const showAddDialog = ref(false);
+
+                const basicClick = () => {
+                    console.log('基础按钮被点击');
+                    basicResult.value = '基础按钮点击成功！';
+                };
+
+                const handleSubmit = () => {
+                    console.log('提交表单');
+                    showAddDialog.value = false;
+                    alert('表单提交成功！');
+                };
+
+                // 监听对话框状态变化
+                Vue.watch(showDialog, (newVal) => {
+                    console.log('对话框状态变化:', newVal);
+                });
+
+                Vue.watch(showAddDialog, (newVal) => {
+                    console.log('新增对话框状态变化:', newVal);
+                });
+
+                return {
+                    basicResult,
+                    showDialog,
+                    showAddDialog,
+                    basicClick,
+                    handleSubmit
+                };
+            }
+        }).use(ElementPlus).mount('#app');
+
+        console.log('测试页面已加载');
+    </script>
+</body>
+</html>

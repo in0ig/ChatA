@@ -144,13 +144,18 @@ export const useDataPreparationStore = defineStore('dataPreparation', () => {
     try {
       loading.value = true
       error.value = null
+      console.log('🔄 Store - fetchDictionaryItems: starting for dictionaryId:', dictionaryId)
+      
       const response = dictionaryId 
         ? await dictionaryApi.getDictionaryItems(dictionaryId)
         : await dictionaryApi.getAllDictionaryItems()
+      
+      console.log('📡 Store - fetchDictionaryItems: API response:', response)
       dictionaryItems.value = response.data || []
+      console.log('✅ Store - fetchDictionaryItems: updated dictionaryItems, count:', dictionaryItems.value.length)
     } catch (err: any) {
       error.value = err.message || 'Failed to fetch dictionary items'
-      console.error('Error fetching dictionary items:', err)
+      console.error('❌ Store - fetchDictionaryItems: error:', err)
     } finally {
       loading.value = false
     }

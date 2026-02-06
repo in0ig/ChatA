@@ -5,10 +5,10 @@
 import logging
 import json
 import time
+import os
 from typing import Dict, List, Optional, Any
 from redis import Redis, ConnectionError
 from redis.exceptions import RedisError
-from src.config import get_config
 from src.models.data_preparation_model import Dictionary, DictionaryItem
 
 # 创建日志记录器
@@ -23,9 +23,9 @@ class DictionaryCache:
     def __init__(self):
         """初始化字典缓存服务"""
         self.redis_client = None
-        config = get_config()
-        self.is_enabled = config.redis.cache_enabled
-        self.cache_ttl = config.redis.cache_ttl  # 缓存过期时间（秒）
+        # 使用环境变量配置Redis
+        self.is_enabled = os.getenv('DICTIONARY_CACHE_ENABLED', 'false').lower() == 'true'
+        self.cache_ttl = int(os.getenv('DICTIONARY_CACHE_TTL', '3600'))  # 缓存过期时间（秒）
         self.cache_version_key = "dictionary:cache_version"  # 缓存版本控制键
         self._connect()
         
@@ -36,12 +36,12 @@ class DictionaryCache:
             return
         
         try:
-            config = get_config()
+            # 使用环境变量配置Redis连接
             self.redis_client = Redis(
-                host=config.redis.host,
-                port=config.redis.port,
-                db=config.redis.db,
-                password=config.redis.password,
+                host=os.getenv('REDIS_HOST', '127.0.0.1'),
+                port=int(os.getenv('REDIS_PORT', '6379')),
+                db=int(os.getenv('REDIS_DB', '0')),
+                password=os.getenv('REDIS_PASSWORD', None) or None,
                 socket_connect_timeout=5,
                 socket_timeout=5,
                 retry_on_timeout=True,

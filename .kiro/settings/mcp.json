@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "chrome-connector": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp",
+        "--browser-url",
+        "http://127.0.0.1:9222"
+      ],
+      "env": {
+        "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
+      },
+      "disabledTools": [],
+      "autoApprove": [
+        "list_pages",
+        "take_snapshot",
+        "list_console_messages",
+        "get_console_message",
+        "list_network_requests",
+        "get_network_request",
+        "navigate_page",
+        "click",
+        "click",
+        "take_screenshot",
+        "evaluate_script",
+        "fill",
+        "wait_for",
+        "press_key"
+      ]
+    }
+  }
+}

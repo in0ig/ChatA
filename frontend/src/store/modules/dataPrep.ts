@@ -324,6 +324,21 @@ export const useDataPrepStore = defineStore('dataPrep', {
     
     // 根据数据源ID获取数据表
     getTablesBySourceId: (state) => (sourceId: string) => {
+      // 防御性编程：确保 dataTables 是数组
+      if (!Array.isArray(state.dataTables)) {
+        console.warn('dataTables 不是数组:', state.dataTables)
+        return []
+      }
+      return state.dataTables.filter(t => t.sourceId === sourceId)
+    },
+
+    // 根据数据源ID获取数据表（别名方法，用于 Home.vue）
+    getDataTablesBySourceId: (state) => (sourceId: string) => {
+      // 防御性编程：确保 dataTables 是数组
+      if (!Array.isArray(state.dataTables)) {
+        console.warn('dataTables 不是数组:', state.dataTables)
+        return []
+      }
       return state.dataTables.filter(t => t.sourceId === sourceId)
     },
     
@@ -655,18 +670,34 @@ export const useDataPrepStore = defineStore('dataPrep', {
       }
       
       try {
-        let data: DataTable[]
+        let data: any
         if (sourceId) {
           data = await dataTableApi.getBySourceId(sourceId)
         } else {
           data = await dataTableApi.getAll()
         }
         
-        this.dataTables = data
+        // 确保 data 是数组，如果不是则使用空数组
+        let dataArray: DataTable[] = []
+        if (Array.isArray(data)) {
+          dataArray = data
+        } else if (data && typeof data === 'object') {
+          // 如果返回的是对象，可能包含 items 或 data 字段
+          if (Array.isArray(data.items)) {
+            dataArray = data.items
+          } else if (Array.isArray(data.data)) {
+            dataArray = data.data
+          } else {
+            console.warn('API 返回的数据格式不正确:', data)
+            dataArray = []
+          }
+        }
+        
+        this.dataTables = dataArray
         
         // 更新缓存
         this.dataTableCache.set(cacheKey, {
-          data: [...data],
+          data: [...dataArray],
           timestamp: new Date(),
           sourceId: sourceId || 'all'
         })
@@ -674,7 +705,10 @@ export const useDataPrepStore = defineStore('dataPrep', {
         this.preloadStatus.dataTables = true
         
       } catch (error: any) {
-        uiStore.showToast(error?.message || 'Unknown error', 'error')
+        console.error('加载数据表失败:', error)
+        // 确保即使出错也设置为空数组，避免 filter 错误
+        this.dataTables = []
+        uiStore.showToast(error?.message || '加载数据表失败', 'error')
       }
     },
     

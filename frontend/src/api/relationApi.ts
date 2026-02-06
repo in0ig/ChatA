@@ -5,7 +5,7 @@ export const relationApi = {
   // 表关系管理
   async getRelations(): Promise<ApiResponse<TableRelation[]>> {
     try {
-      const response = await apiClient.get('/api/relations')
+      const response = await apiClient.get('/relations')
       return {
         success: true,
         data: response.data
@@ -20,7 +20,7 @@ export const relationApi = {
 
   async getRelationsByTable(tableId: number): Promise<ApiResponse<TableRelation[]>> {
     try {
-      const response = await apiClient.get(`/api/tables/${tableId}/relations`)
+      const response = await apiClient.get(`/tables/${tableId}/relations`)
       return {
         success: true,
         data: response.data
@@ -35,7 +35,7 @@ export const relationApi = {
 
   async createRelation(relation: Omit<TableRelation, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<TableRelation>> {
     try {
-      const response = await apiClient.post('/api/relations', relation)
+      const response = await apiClient.post('/relations', relation)
       return {
         success: true,
         data: response.data
@@ -50,7 +50,7 @@ export const relationApi = {
 
   async updateRelation(id: number, relation: Partial<TableRelation>): Promise<ApiResponse<TableRelation>> {
     try {
-      const response = await apiClient.put(`/api/relations/${id}`, relation)
+      const response = await apiClient.put(`/relations/${id}`, relation)
       return {
         success: true,
         data: response.data
@@ -65,7 +65,7 @@ export const relationApi = {
 
   async deleteRelation(id: number): Promise<ApiResponse<void>> {
     try {
-      await apiClient.delete(`/api/relations/${id}`)
+      await apiClient.delete(`/relations/${id}`)
       return {
         success: true,
         message: 'Relation deleted successfully'
